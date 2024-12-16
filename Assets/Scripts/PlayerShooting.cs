@@ -1,3 +1,4 @@
+
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,10 @@ public class PlayerShooting : MonoBehaviour
     private int currentAmmo; // Þu anki mermi sayýsý
     public float reloadTime = 1f; // Reload süresi
     private bool isReloading = false;
+    public float bulletSpawnHeight = 3f;
+    public float gunRange = 10f;
+    public float fireRate = 0.2f; // Ateþ etme gecikmesi
+    private float nextFireTime = 0f;
 
     void Start()
     {
@@ -18,10 +23,14 @@ public class PlayerShooting : MonoBehaviour
     void Update()
     {
         // Eðer reloading yapýlmýyorsa ve mermi varsa sol týkla ateþ et
-        if (!isReloading && currentAmmo > 0 && Input.GetMouseButtonDown(0))
+        if (!isReloading && currentAmmo > 0 && Input.GetMouseButton(0))
         {
-            FireBullet();
-            currentAmmo--;
+            if (Time.time >= nextFireTime)
+            {
+                FireBullet();
+                currentAmmo--;
+                nextFireTime = Time.time + fireRate; // Bir sonraki ateþ etme zamaný
+            }
         }
 
         // Eðer mermiler bitmiþse veya R tuþuna basýlmýþsa reload iþlemi
@@ -35,24 +44,26 @@ public class PlayerShooting : MonoBehaviour
     // Mouse yönüne ateþ etme
     void FireBullet()
     {
-        // Player'ýn yönünü al (yani karakterin baktýðý yön)
-        Vector3 direction = transform.up;  // Player'ýn "forward" yönü (baktýðý yön)
+        // Player'ýn yönünü al (baktýðý yön)
+        Vector3 direction = transform.forward;  // Oyuncunun baktýðý yön (3D oyun için)
 
         // Mermiyi instantiate et
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(0, bulletSpawnHeight, 0), Quaternion.identity);
 
-        // Rigidbody3D bileþenini al
+        // Merminin Rigidbody'sini al
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // Mermiyi player'ýn baktýðý yönde hareket ettir
+            // Mermiyi oyuncunun baktýðý yönde hareket ettir
             rb.velocity = direction * bulletSpeed;
         }
         else
         {
             Debug.LogWarning("Rigidbody component not found on bullet prefab!");
         }
+        Destroy(bullet, gunRange);
     }
+
 
 
 
