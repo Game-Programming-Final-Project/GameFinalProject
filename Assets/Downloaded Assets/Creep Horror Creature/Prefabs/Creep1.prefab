@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2547632407910942002}
-  - component: {fileID: 6282200738537253640}
+  - component: {fileID: 384975934728950184}
   m_Layer: 0
   m_Name: Creep1
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 2653107609653403086}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6282200738537253640
+--- !u!114 &384975934728950184
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   moveSpeed: 3
+  damage: 10
 --- !u!1001 &2547632406756309541
 PrefabInstance:
   m_ObjectHideFlags: 0

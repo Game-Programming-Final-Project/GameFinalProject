@@ -4,6 +4,23 @@ public class EnemyAI : MonoBehaviour
 {
     public Transform player; // Reference to the player's transform
     public float moveSpeed = 3f; // Speed at which the enemy moves towards the player
+    public float damage = 10;
+
+    void Start()
+    {
+        if (player == null) // Eðer player atanmadýysa
+        {
+            GameObject playerObject = GameObject.FindWithTag("Player");
+            if (playerObject != null)
+            {
+                player = playerObject.transform; // Oyuncunun Transform bileþenine eriþ
+            }
+            else
+            {
+                Debug.LogWarning("Player object not found in the scene. Make sure the Player has the correct tag.");
+            }
+        }
+    }
 
     void Update()
     {
@@ -35,5 +52,19 @@ public class EnemyAI : MonoBehaviour
 
         // Smoothly rotate towards the player
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+    }
+    // Temas baþýna oyuncuya verilen hasar
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Eðer temasta bulunduðu obje oyuncuysa
+        if (other.CompareTag("Player"))
+        {
+            Health playerHealth = other.GetComponent<Health>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damage); // Oyuncuya hasar ver
+            }
+        }
     }
 }
