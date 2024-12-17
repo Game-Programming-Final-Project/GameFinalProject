@@ -49,9 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  moveSpeed: 4.52
-  damage: 10
-  coinvalue: 3
+  moveSpeed: 5
+  damage: 20
 --- !u!136 &-5083142551478875449
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -90,6 +89,8 @@ MonoBehaviour:
   maxHealth: 40
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
+  financeManager: {fileID: 0}
+  soulValueEnemy: 5
 --- !u!1001 &1538110141042390285
 PrefabInstance:
   m_ObjectHideFlags: 0

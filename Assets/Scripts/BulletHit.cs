@@ -3,7 +3,8 @@ using UnityEngine;
 public class BulletHit : MonoBehaviour
 {
     public int damage = 20; // Mermi hasarý
-
+    
+    
     private void OnTriggerEnter(Collider other)
     {
         // Eðer vurulan nesne düþmansa
@@ -13,7 +14,9 @@ public class BulletHit : MonoBehaviour
             if (enemyHealth != null)
             {
                 enemyHealth.TakeDamage(damage); // Düþmana hasar ver
+
             }
+
             Destroy(gameObject); // Mermiyi sahneden kaldýr
         }
     }

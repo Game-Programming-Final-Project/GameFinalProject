@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 10f;
 
     private Camera mainCamera;
-
+    private FinanceManager financeManager;
     [Header("Stamina Settings")]
     public float maxStamina = 100f; // Maksimum stamina
     private float currentStamina;   // Þu anki stamina
@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        financeManager = FindObjectOfType<FinanceManager>();
         mainCamera = Camera.main;
         Cursor.lockState = CursorLockMode.Confined; // Keep the cursor within the game window
         currentStamina = maxStamina; // Baþlangýçta maksimum stamina
@@ -90,4 +91,14 @@ public class PlayerController : MonoBehaviour
             staminaBar.value = currentStamina / maxStamina; // Slider'ý normalize et
         }
     }
+    public void BuyIncreaseMaxStamina(int cost)
+    {
+        if(financeManager.SpendSoul(cost))
+        maxStamina += 10;
+        staminaBar.maxValue = maxStamina;
+        staminaBar.value = currentStamina;
+        staminaBar.value = currentStamina / maxStamina;
+    }
+
+
 }

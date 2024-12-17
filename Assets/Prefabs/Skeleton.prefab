@@ -117,7 +117,6 @@ MonoBehaviour:
   player: {fileID: 0}
   moveSpeed: 3
   damage: 10
-  coinvalue: 1
 --- !u!114 &5052096909606279777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,3 +132,5 @@ MonoBehaviour:
   maxHealth: 20
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
+  financeManager: {fileID: 0}
+  soulValueEnemy: 2

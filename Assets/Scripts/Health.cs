@@ -1,75 +1,128 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 public class Health : MonoBehaviour
 {
     public float maxHealth = 100; // Maksimum can deðeri
     private float currentHealth; // Þu anki can deðeri
     public GameObject gameOverScreen;
     public Slider healthBar; // Saðlýk çubuðu slider referansý
+    private FinanceManager financeManager;
+    public int buyhealth = 10;
+    public int BuyMaxHealth = 10;
+    public int soulValueEnemy = 1;
 
     void Start()
     {
-        currentHealth = maxHealth; // Baþlangýçta maksimum can
+        financeManager = FindObjectOfType<FinanceManager>(); // FinanceManager referansýný bul
+        if (financeManager == null)
+        {
+            Debug.LogError("FinanceManager is missing in the scene!");
+        }
+
+        currentHealth = maxHealth;
         if (healthBar != null)
         {
-            healthBar.maxValue = maxHealth; // Slider maksimum deðeri
-            healthBar.value = currentHealth; // Slider baþlangýç deðeri
+            healthBar.maxValue = maxHealth;
+            healthBar.value = currentHealth;
         }
     }
 
-    // Can azaltma metodu
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage; // Caný azalt
-        Debug.Log(gameObject.name + " took damage! Current HP: " + currentHealth);
+        currentHealth -= damage;
 
         if (healthBar != null)
-
         {
-            healthBar.value = currentHealth; // Saðlýk çubuðunu güncelle
+            healthBar.value = currentHealth;
         }
+
         if (currentHealth <= 0)
         {
-            Die(); // Saðlýk sýfýra ulaþtýðýnda öl
+            Die();
         }
     }
 
-    // Ölme metodu
     private void Die()
     {
-        Debug.Log(gameObject.name + " has died!");
         if (gameObject.CompareTag("Player")) // Eðer ölen oyuncuysa
         {
             GameOver();
         }
         else
         {
-            Destroy(gameObject); // Eðer düþmansa yok et
+            Destroy(gameObject); // Düþman yok edilir
+            financeManager.AddSoul(soulValueEnemy); // Soul ekle
         }
     }
 
     private void GameOver()
     {
-        Time.timeScale = 0f; // Oyunu durdur
+        Time.timeScale = 0f;
         if (gameOverScreen != null)
         {
-            gameOverScreen.SetActive(true); // Game Over ekranýný aç
-        }
-        else
-        {
-            Debug.LogWarning("GameOverScreen panel is not assigned in the Inspector!");
+            gameOverScreen.SetActive(true);
         }
     }
 
-    // Can ekleme metodu (isteðe baðlý)
+    // Market Özellikleri
+    public void BuyFullHeal(int cost)
+    {
+        if (financeManager != null && financeManager.SpendSoul(cost)) // Soul yeterli mi kontrol et
+        {
+            FullHeal();
+            Debug.Log("Full Heal purchased!");
+        }
+        else
+        {
+            Debug.Log("Not enough souls to purchase Full Heal!");
+        }
+    }
+
+    public void BuyAddHealth(int cost)
+    {
+        if (financeManager != null && financeManager.SpendSoul(cost))
+        {
+            Heal(buyhealth);
+            Debug.Log(10 + " Health added!");
+        }
+        else
+        {
+            Debug.Log("Not enough souls to purchase Health!");
+        }
+    }
+
+    public void BuyIncreaseMaxHealth(int cost)
+    {
+        if (financeManager != null && financeManager.SpendSoul(cost))
+        {
+            IncreaseMaxHealth(BuyMaxHealth);
+            Debug.Log("Max Health increased by " + BuyMaxHealth + "!");
+        }
+        else
+        {
+            Debug.Log("Not enough souls to increase Max Health!");
+        }
+    }
+
+    // Can ekleme ve iyileþtirme metodlarý
     public void Heal(int amount)
     {
         currentHealth += amount;
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth; // Maksimum caný aþma
+        currentHealth = Mathf.Min(currentHealth, maxHealth); // Can maksimum deðeri aþamaz
+        healthBar.value = currentHealth;
+    }
 
-        }
+    public void FullHeal()
+    {
+        currentHealth = maxHealth;
+        healthBar.value = currentHealth;
+    }
+
+    public void IncreaseMaxHealth(int amount)
+    {
+        maxHealth += amount;
+        healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
     }
 }
