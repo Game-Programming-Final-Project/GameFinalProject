@@ -1,39 +1,46 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerShooting : MonoBehaviour
 {
-    public GameObject bulletPrefab; // Mermi prefab'ý
-    public float bulletSpeed = 10f; // Mermi hýzý
-    public int maxAmmo = 30; // Maksimum mermi sayýsý
-    private int currentAmmo; // Þu anki mermi sayýsý
-    public float reloadTime = 1f; // Reload süresi
+    public GameObject bulletPrefab; // Mermi prefab'ï¿½
+    public float bulletSpeed = 10f; // Mermi hï¿½zï¿½
+    public int maxAmmo = 30; // Maksimum mermi sayï¿½sï¿½
+    private int currentAmmo; // ï¿½u anki mermi sayï¿½sï¿½
+    public float reloadTime = 1f; // Reload sï¿½resi
     private bool isReloading = false;
     public float bulletSpawnHeight = 3f;
     public float gunRange = 10f;
-    public float fireRate = 0.2f; // Ateþ etme gecikmesi
+    public float fireRate = 0.2f; // Ateï¿½ etme gecikmesi
     private float nextFireTime = 0f;
+    private AudioSource audioSource;
+    public TextMeshProUGUI ammoText;
 
     void Start()
     {
-        currentAmmo = maxAmmo; // Baþlangýçta 30 mermi
+        currentAmmo = maxAmmo; // Baï¿½langï¿½ï¿½ta 30 mermi
+        audioSource = GetComponent<AudioSource>(); // AudioSource b
+        
     }
 
     void Update()
     {
-        // Eðer reloading yapýlmýyorsa ve mermi varsa sol týkla ateþ et
+        ammoText.text="BULLET= "+ currentAmmo +"/30";
+        // Eï¿½er reloading yapï¿½lmï¿½yorsa ve mermi varsa sol tï¿½kla ateï¿½ et
         if (!isReloading && currentAmmo > 0 && Input.GetMouseButton(0))
         {
             if (Time.time >= nextFireTime)
             {
                 FireBullet();
                 currentAmmo--;
-                nextFireTime = Time.time + fireRate; // Bir sonraki ateþ etme zamaný
+                nextFireTime = Time.time + fireRate; // Bir sonraki ateï¿½ etme zamanï¿½
             }
         }
 
-        // Eðer mermiler bitmiþse veya R tuþuna basýlmýþsa reload iþlemi
+        // Eï¿½er mermiler bitmiï¿½se veya R tuï¿½una basï¿½lmï¿½ï¿½sa reload iï¿½lemi
         if (Input.GetKeyDown(KeyCode.R) || currentAmmo <= 0)
         {
             if (!isReloading)
@@ -41,11 +48,11 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    // Mouse yönüne ateþ etme
+    // Mouse yï¿½nï¿½ne ateï¿½ etme
     void FireBullet()
     {
-        // Player'ýn yönünü al (baktýðý yön)
-        Vector3 direction = transform.forward;  // Oyuncunun baktýðý yön (3D oyun için)
+        // Player'ï¿½n yï¿½nï¿½nï¿½ al (baktï¿½ï¿½ï¿½ yï¿½n)
+        Vector3 direction = transform.forward;  // Oyuncunun baktï¿½ï¿½ï¿½ yï¿½n (3D oyun iï¿½in)
 
         // Mermiyi instantiate et
         GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(0, bulletSpawnHeight, 0), Quaternion.identity);
@@ -54,7 +61,7 @@ public class PlayerShooting : MonoBehaviour
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // Mermiyi oyuncunun baktýðý yönde hareket ettir
+            // Mermiyi oyuncunun baktï¿½ï¿½ï¿½ yï¿½nde hareket ettir
             rb.velocity = direction * bulletSpeed;
         }
         else
@@ -62,17 +69,22 @@ public class PlayerShooting : MonoBehaviour
             Debug.LogWarning("Rigidbody component not found on bullet prefab!");
         }
         Destroy(bullet, gunRange);
+         if (audioSource != null)
+    {
+        audioSource.Play();
+    }
     }
 
 
 
 
-    // Reload iþlemi
+    // Reload iï¿½lemi
     IEnumerator Reload()
     {
         isReloading = true;
-        yield return new WaitForSeconds(reloadTime); // Reload süresi
+        yield return new WaitForSeconds(reloadTime); // Reload sï¿½resi
         currentAmmo = maxAmmo;
+        ammoText.text="BULLET= "+ currentAmmo +"/30";
         isReloading = false;
     }
 }
