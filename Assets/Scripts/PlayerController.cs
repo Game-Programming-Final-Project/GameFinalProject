@@ -32,16 +32,33 @@ public class PlayerController : MonoBehaviour
         // Calculate movement direction
         Vector3 movement = new Vector3(horizontal, 0, vertical).normalized;
 
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        
         // Determine speed based on Shift key
-        float speed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+        float speed = isRunning ? runSpeed : walkSpeed;
 
         // Apply movement directly to the transform
         transform.position += movement * speed * Time.deltaTime;
+
         if(movement.magnitude > 0)
-            animator.SetTrigger("RunTrigger");
+        {
+            if (isRunning)
+            {
+                animator.ResetTrigger("RunTrigger");
+                animator.SetTrigger("RunFastTrigger");
+            }
+            else
+            {
+                animator.ResetTrigger("RunFastTrigger");
+                animator.SetTrigger("RunTrigger");
+            }
+
+        }
+
         else
         {
             animator.ResetTrigger("RunTrigger");
+            animator.ResetTrigger("RunFastTrigger");
             animator.SetTrigger("IdleTrigger");
         }
            
