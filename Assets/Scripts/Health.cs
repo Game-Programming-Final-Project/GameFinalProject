@@ -22,7 +22,7 @@ public class Health : MonoBehaviour
     {
         currentHealth -= damage; // Caný azalt
         Debug.Log(gameObject.name + " took damage! Current HP: " + currentHealth);
-        
+
         if (healthBar != null)
 
         {
@@ -68,6 +68,8 @@ public class Health : MonoBehaviour
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth; // Maksimum caný aþma
+
         }
+        healthBar.value = currentHealth;
     }
 }

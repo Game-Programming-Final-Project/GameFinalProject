@@ -85,6 +85,7 @@ public class SpawnManager : MonoBehaviour
 
     void EndWave()
     {
+        Time.timeScale = 0f;
         spawning = false;
 
         // Sahnedeki düþmanlarý temizle
@@ -113,6 +114,7 @@ public class SpawnManager : MonoBehaviour
     {
         marketPanel.SetActive(false); // Market panelini kapat
         StartNewWave(); // Yeni wave baþlat
+        Time.timeScale = 1f;
     }
 
     Vector3 GetRandomSpawnPosition()

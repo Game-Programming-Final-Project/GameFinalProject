@@ -175,6 +175,7 @@ MonoBehaviour:
   player: {fileID: 0}
   moveSpeed: 3
   damage: 10
+  coinvalue: 1
 --- !u!114 &3066318873375970269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,10 +185,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6393962119615034860}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e20370521a5ab654b9674002560f7f24, type: 3}
+  m_Script: {fileID: 11500000, guid: ebf3eb65c98bf64438b1adf5b7934751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
+  maxHealth: 140
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
 --- !u!65 &5721974369272797109
