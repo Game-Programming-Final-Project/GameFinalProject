@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Animator animator;
     public float walkSpeed = 5f;
     public float runSpeed = 10f;
 
@@ -17,14 +18,17 @@ public class PlayerController : MonoBehaviour
     {
         MovePlayer();
         RotateTowardsMouse();
+        //if (Input.GetMouseButtonDown(0))
+        //    animator.SetTrigger("ShootTrigger");
     }
 
     void MovePlayer()
     {
+           
         // Input for movement
         float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right Arrow
         float vertical = Input.GetAxis("Vertical");   // W/S or Up/Down Arrow
-
+        
         // Calculate movement direction
         Vector3 movement = new Vector3(horizontal, 0, vertical).normalized;
 
@@ -33,6 +37,14 @@ public class PlayerController : MonoBehaviour
 
         // Apply movement directly to the transform
         transform.position += movement * speed * Time.deltaTime;
+        if(movement.magnitude > 0)
+            animator.SetTrigger("RunTrigger");
+        else
+        {
+            animator.ResetTrigger("RunTrigger");
+            animator.SetTrigger("IdleTrigger");
+        }
+           
     }
 
     void RotateTowardsMouse()
