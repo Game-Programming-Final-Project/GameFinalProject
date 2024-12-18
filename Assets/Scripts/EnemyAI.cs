@@ -5,6 +5,9 @@ public class EnemyAI : MonoBehaviour
     public Transform player; // Reference to the player's transform
     public float moveSpeed = 3f; // Speed at which the enemy moves towards the player
     public float damage = 10;
+    
+    
+
 
     void Start()
     {
@@ -67,4 +70,5 @@ public class EnemyAI : MonoBehaviour
             }
         }
     }
+    
 }

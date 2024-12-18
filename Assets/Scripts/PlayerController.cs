@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -6,17 +7,29 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 10f;
 
     private Camera mainCamera;
+    private FinanceManager financeManager;
+    [Header("Stamina Settings")]
+    public float maxStamina = 100f; // Maksimum stamina
+    private float currentStamina;   // Þu anki stamina
+    public float staminaDrainRate = 10f; // Koþarken saniyede azalan stamina miktarý
+    public float staminaRegenRate = 5f;  // Koþmayý býraktýðýnda saniyede dolan stamina miktarý
+
+    public Slider staminaBar;       // Stamina bar slider
 
     void Start()
     {
+        financeManager = FindObjectOfType<FinanceManager>();
         mainCamera = Camera.main;
         Cursor.lockState = CursorLockMode.Confined; // Keep the cursor within the game window
+        currentStamina = maxStamina; // Baþlangýçta maksimum stamina
+        UpdateStaminaBar();          // Stamina barýný güncelle
     }
 
     void Update()
     {
         MovePlayer();
         RotateTowardsMouse();
+        UpdateStamina();             // Stamina deðerlerini güncelle
     }
 
     void MovePlayer()
@@ -28,11 +41,19 @@ public class PlayerController : MonoBehaviour
         // Calculate movement direction
         Vector3 movement = new Vector3(horizontal, 0, vertical).normalized;
 
-        // Determine speed based on Shift key
-        float speed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+        // Determine speed based on Shift key and stamina availability
+        bool isRunning = Input.GetKey(KeyCode.LeftShift) && currentStamina > 0.1;
+        float speed = isRunning ? runSpeed : walkSpeed;
 
         // Apply movement directly to the transform
         transform.position += movement * speed * Time.deltaTime;
+
+        // Drain stamina if running
+        if (isRunning)
+        {
+            currentStamina -= staminaDrainRate * Time.deltaTime;
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sýnýrlandýr
+        }
     }
 
     void RotateTowardsMouse()
@@ -50,4 +71,34 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
         }
     }
+
+    void UpdateStamina()
+    {
+        // Regenerate stamina when not running
+        if (!Input.GetKey(KeyCode.LeftShift) || currentStamina <= 0)
+        {
+            currentStamina += staminaRegenRate * Time.deltaTime;
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sýnýrlandýr
+        }
+
+        UpdateStaminaBar(); // Slider'ý güncelle
+    }
+
+    void UpdateStaminaBar()
+    {
+        if (staminaBar != null)
+        {
+            staminaBar.value = currentStamina / maxStamina; // Slider'ý normalize et
+        }
+    }
+    public void BuyIncreaseMaxStamina(int cost)
+    {
+        if(financeManager.SpendSoul(cost))
+        maxStamina += 10;
+        staminaBar.maxValue = maxStamina;
+        staminaBar.value = currentStamina;
+        staminaBar.value = currentStamina / maxStamina;
+    }
+
+
 }
