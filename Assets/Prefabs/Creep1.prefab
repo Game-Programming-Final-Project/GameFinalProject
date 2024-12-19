@@ -89,8 +89,9 @@ MonoBehaviour:
   maxHealth: 40
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
-  financeManager: {fileID: 0}
-  soulValueEnemy: 5
+  buyhealth: 10
+  BuyMaxHealth: 10
+  soulValueEnemy: 10
 --- !u!1001 &1538110141042390285
 PrefabInstance:
   m_ObjectHideFlags: 0

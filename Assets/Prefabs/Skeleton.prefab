@@ -132,5 +132,6 @@ MonoBehaviour:
   maxHealth: 20
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
-  financeManager: {fileID: 0}
-  soulValueEnemy: 2
+  buyhealth: 10
+  BuyMaxHealth: 10
+  soulValueEnemy: 5

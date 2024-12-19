@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class Health : MonoBehaviour
     public int buyhealth = 10;
     public int BuyMaxHealth = 10;
     public int soulValueEnemy = 1;
+    
 
     void Start()
     {
@@ -26,6 +28,10 @@ public class Health : MonoBehaviour
             healthBar.maxValue = maxHealth;
             healthBar.value = currentHealth;
         }
+    }
+    void Update()
+    {
+       
     }
 
     public void TakeDamage(float damage)
@@ -124,5 +130,13 @@ public class Health : MonoBehaviour
         maxHealth += amount;
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
+    }
+    public float getCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public float getMaxHealth()
+    {
+        return maxHealth;
     }
 }

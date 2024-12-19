@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,26 +8,30 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 10f;
 
     private Camera mainCamera;
+    private Health health;
     private FinanceManager financeManager;
     [Header("Stamina Settings")]
     public float maxStamina = 100f; // Maksimum stamina
-    private float currentStamina;   // Þu anki stamina
+    public float currentStamina;   // Þu anki stamina
     public float staminaDrainRate = 10f; // Koþarken saniyede azalan stamina miktarý
     public float staminaRegenRate = 5f;  // Koþmayý býraktýðýnda saniyede dolan stamina miktarý
-
+    public TextMeshProUGUI healthcounter;
     public Slider staminaBar;       // Stamina bar slider
 
     void Start()
     {
+        health = GetComponent<Health>();
         financeManager = FindObjectOfType<FinanceManager>();
         mainCamera = Camera.main;
         Cursor.lockState = CursorLockMode.Confined; // Keep the cursor within the game window
         currentStamina = maxStamina; // Baþlangýçta maksimum stamina
         UpdateStaminaBar();          // Stamina barýný güncelle
+        
     }
 
     void Update()
     {
+        healthcounter.text = health.getCurrentHealth() + "/" + health.getMaxHealth();
         MovePlayer();
         RotateTowardsMouse();
         UpdateStamina();             // Stamina deðerlerini güncelle
@@ -88,17 +93,30 @@ public class PlayerController : MonoBehaviour
     {
         if (staminaBar != null)
         {
-            staminaBar.value = currentStamina / maxStamina; // Slider'ý normalize et
+            staminaBar.value = currentStamina; // Slider'ý normalize et
         }
     }
     public void BuyIncreaseMaxStamina(int cost)
     {
-        if(financeManager.SpendSoul(cost))
-        maxStamina += 10;
-        staminaBar.maxValue = maxStamina;
-        staminaBar.value = currentStamina;
-        staminaBar.value = currentStamina / maxStamina;
+        if (financeManager.SpendSoul(cost))
+        {
+            maxStamina += 10;
+            staminaBar.maxValue = maxStamina;
+            UpdateStaminaBar();
+        }
     }
+    public void BuyStaminaRegenRate(int cost)
+    {
+        if (financeManager != null && financeManager.SpendSoul(cost))
+        {
+            staminaRegenRate += ((staminaRegenRate * 3) / 10);
 
+            Debug.Log("Firerate increased by %30!");
+        }
+        else
+        {
+            Debug.Log("Not enough souls to increase Max Health!");
+        }
+    }
 
 }
