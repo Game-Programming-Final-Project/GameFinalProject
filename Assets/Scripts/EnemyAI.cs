@@ -4,10 +4,10 @@ public class EnemyAI : MonoBehaviour
 {
     public Transform player; // Reference to the player's transform
     public float moveSpeed = 3f; // Speed at which the enemy moves towards the player
-    public float damage = 10;
-    
-    
-
+    public float damage = 10f;  // Düþmanýn vereceði hasar
+    private bool isPlayerInRange = false; // Oyuncu trigger alanýnda mý?
+    private float damageCooldown = 1f; // 1 saniye aralýkla hasar verme
+    private float lastDamageTime = 0f; // Son hasar verme zamaný
 
     void Start()
     {
@@ -31,44 +31,57 @@ public class EnemyAI : MonoBehaviour
         {
             MoveTowardsPlayer();
             RotateTowardsPlayer();
+
+            // Eðer oyuncu trigger alanýnda ve yeterince zaman geçmiþse hasar ver
+            if (isPlayerInRange && Time.time - lastDamageTime >= damageCooldown)
+            {
+                Health playerHealth = player.GetComponent<Health>();
+                if (playerHealth != null)
+                {
+                    playerHealth.TakeDamage(damage); // Oyuncuya hasar ver
+                    lastDamageTime = Time.time; // Son hasar zamanýný güncelle
+                }
+            }
         }
     }
 
     void MoveTowardsPlayer()
     {
-        // Calculate direction towards the player
+        // Oyuncuya doðru hareket yönünü hesapla
         Vector3 direction = (player.position - transform.position).normalized;
-        direction.y = 0; // Ensure the enemy stays on the same vertical plane
+        direction.y = 0; // Düþmanýn dikey düzlemde hareket etmesini engelle
 
-        // Move the enemy towards the player
+        // Düþmaný oyuncuya doðru hareket ettir
         transform.position += direction * moveSpeed * Time.deltaTime;
     }
 
     void RotateTowardsPlayer()
     {
-        // Calculate the direction to the player
+        // Oyuncuya doðru yönü hesapla
         Vector3 direction = (player.position - transform.position).normalized;
-        direction.y = 0; // Keep rotation on the XZ plane
+        direction.y = 0; // Dönüþü sadece XZ düzleminde tut
 
-        // Calculate the rotation to look at the player
+        // Oyuncuya dönme rotasýný hesapla
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        // Smoothly rotate towards the player
+        // Düþmaný yavaþça oyuncuya doðru döndür
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
-    // Temas baþýna oyuncuya verilen hasar
 
+    // Oyuncu ile temas halinde hasar ver
     private void OnTriggerEnter(Collider other)
     {
-        // Eðer temasta bulunduðu obje oyuncuysa
         if (other.CompareTag("Player"))
         {
-            Health playerHealth = other.GetComponent<Health>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(damage); // Oyuncuya hasar ver
-            }
+            isPlayerInRange = true; // Oyuncu trigger alanýna girdi
         }
     }
-    
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInRange = false; // Oyuncu trigger alanýndan çýktý
+        }
+    }
 }

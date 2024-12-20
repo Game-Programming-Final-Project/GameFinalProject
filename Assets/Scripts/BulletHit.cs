@@ -13,7 +13,7 @@ public class BulletHit : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Eðer vurulan nesne düþmansa
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy") || other.CompareTag("Boss"))
         {
             Health enemyHealth = other.GetComponent<Health>();
             if (enemyHealth != null)

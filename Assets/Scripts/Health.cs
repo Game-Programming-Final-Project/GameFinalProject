@@ -29,10 +29,8 @@ public class Health : MonoBehaviour
             healthBar.value = currentHealth;
         }
     }
-    void Update()
-    {
-       
-    }
+    
+  
 
     public void TakeDamage(float damage)
     {

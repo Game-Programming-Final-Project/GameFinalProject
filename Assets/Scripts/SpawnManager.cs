@@ -79,12 +79,26 @@ public class SpawnManager : MonoBehaviour
     {
         spawning = false; // Boss spawn edildiði için normal spawn iþlemi durduruluyor
         Vector3 bossSpawnPosition = GetRandomSpawnPosition(); // Oyuncudan uzakta bir pozisyon belirle
-        Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity); // Boss'u spawn et
+        GameObject spawnedBoss = Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity); // Boss'u spawn et
+
         Debug.Log("Boss spawned!");
+
+        // BossManager'a boss'un spawn edildiðini bildir
+        BossManager bossManager = FindObjectOfType<BossManager>();
+        if (bossManager != null)
+        {
+            bossManager.BossSpawned(spawnedBoss);
+        }
+        else
+        {
+            Debug.LogWarning("BossManager bulunamadý! Boss öldüðünde WinScreen açýlmayacak.");
+        }
     }
+
 
     void EndWave()
     {
+        spawnInterval -= spawnInterval * (5/10);
         Time.timeScale = 0f;
         spawning = false;
 

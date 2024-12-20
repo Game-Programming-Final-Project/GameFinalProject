@@ -7,7 +7,7 @@ public class FinanceManager : MonoBehaviour
 {
     public TextMeshProUGUI soulcounter;
     public int playerSoul = 100;
-    
+    public TextMeshProUGUI finalsoul;
     private void Start()
     {
         UpdateSoulUI();
@@ -33,6 +33,7 @@ public class FinanceManager : MonoBehaviour
     private void UpdateSoulUI()
     {
         soulcounter.text = ":" + playerSoul;
+        finalsoul.text = "You freed " + playerSoul + " souls!";
     }
     public int GetPlayerSoul() {
         return playerSoul;

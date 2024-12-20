@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
         if (staminaBar != null)
         {
             staminaBar.value = currentStamina; // Slider'ý normalize et
+            staminaBar.maxValue = maxStamina;
         }
     }
     public void BuyIncreaseMaxStamina(int cost)
@@ -109,13 +110,13 @@ public class PlayerController : MonoBehaviour
     {
         if (financeManager != null && financeManager.SpendSoul(cost))
         {
-            staminaRegenRate += ((staminaRegenRate * 3) / 10);
+            staminaRegenRate += ((staminaRegenRate * 2) / 10);
 
-            Debug.Log("Firerate increased by %30!");
+            Debug.Log("Firerate increased by %20!");
         }
         else
         {
-            Debug.Log("Not enough souls to increase Max Health!");
+            Debug.Log("Not enough souls to increase Firerate!");
         }
     }
 

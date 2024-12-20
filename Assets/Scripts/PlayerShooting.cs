@@ -32,10 +32,11 @@ public class PlayerShooting : MonoBehaviour
 
     void Update()
     {
-        ammoText.text = "BULLET= " + currentAmmo + "/" + maxAmmo;
+        
         // E�er reloading yap�lm�yorsa ve mermi varsa sol t�kla ate� et
         if (!isReloading && currentAmmo > 0 && Input.GetMouseButton(0))
         {
+            ammoText.text = "BULLET= " + currentAmmo + "/" + maxAmmo;
             if (Time.time >= nextFireTime)
             {
                 FireBullet();
@@ -86,6 +87,7 @@ public class PlayerShooting : MonoBehaviour
     IEnumerator Reload()
     {
         isReloading = true;
+        ammoText.text = "RELOADING...";
         yield return new WaitForSeconds(reloadTime); // Reload s�resi
         currentAmmo = maxAmmo;
         ammoText.text = "BULLET= " + currentAmmo + "/30";
@@ -110,7 +112,7 @@ public class PlayerShooting : MonoBehaviour
     {
         if (financeManager != null && financeManager.SpendSoul(cost))
         {
-            damage += 5;
+            damage += 2;
 
             Debug.Log("Max damage increased by +5!");
         }
