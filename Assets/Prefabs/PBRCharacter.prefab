@@ -2499,6 +2499,9 @@ GameObject:
   - component: {fileID: 3790716621930298437}
   - component: {fileID: 9086885675609750987}
   - component: {fileID: 5124518482440130074}
+  - component: {fileID: 11369656185705215}
+  - component: {fileID: 256640144550076174}
+  - component: {fileID: 5209916612424550738}
   m_Layer: 0
   m_Name: PBRCharacter
   m_TagString: Player
@@ -2561,8 +2564,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4e5c9906ea2efb4da244d5a987b4f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 10
+  walkSpeed: 4
+  runSpeed: 7
+  maxStamina: 50
+  currentStamina: 0
+  staminaDrainRate: 25
+  staminaRegenRate: 10
+  healthcounter: {fileID: 0}
+  staminaBar: {fileID: 0}
 --- !u!114 &5124518482440130074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2582,6 +2591,76 @@ MonoBehaviour:
   bulletSpawnHeight: 1
   gunRange: 1.5
   fireRate: 0.2
+  ammoText: {fileID: 0}
+  damage: 10
+--- !u!114 &11369656185705215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096078095333266757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf3eb65c98bf64438b1adf5b7934751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  gameOverScreen: {fileID: 0}
+  healthBar: {fileID: 0}
+  buyhealth: 10
+  BuyMaxHealth: 10
+  soulValueEnemy: 0
+--- !u!136 &256640144550076174
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096078095333266757}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.73
+  m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.95, z: 0}
+--- !u!54 &5209916612424550738
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8096078095333266757}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8405129531432582263
 GameObject:
   m_ObjectHideFlags: 0

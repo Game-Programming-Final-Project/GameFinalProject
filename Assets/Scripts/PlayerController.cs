@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,17 +9,33 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 10f;
 
     private Camera mainCamera;
+    private Health health;
+    private FinanceManager financeManager;
+    [Header("Stamina Settings")]
+    public float maxStamina = 100f; // Maksimum stamina
+    public float currentStamina;   // Þu anki stamina
+    public float staminaDrainRate = 10f; // Koþarken saniyede azalan stamina miktarý
+    public float staminaRegenRate = 5f;  // Koþmayý býraktýðýnda saniyede dolan stamina miktarý
+    public TextMeshProUGUI healthcounter;
+    public Slider staminaBar;       // Stamina bar slider
 
     void Start()
     {
+        health = GetComponent<Health>();
+        financeManager = FindObjectOfType<FinanceManager>();
         mainCamera = Camera.main;
         Cursor.lockState = CursorLockMode.Confined; // Keep the cursor within the game window
+        currentStamina = maxStamina; // Baþlangýçta maksimum stamina
+        UpdateStaminaBar();          // Stamina barýný güncelle
+        
     }
 
     void Update()
     {
+        healthcounter.text = health.getCurrentHealth() + "/" + health.getMaxHealth();
         MovePlayer();
         RotateTowardsMouse();
+        UpdateStamina();             // Stamina deðerlerini güncelle
         //if (Input.GetMouseButtonDown(0))
         //    animator.SetTrigger("ShootTrigger");
     }
@@ -62,6 +80,13 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("IdleTrigger");
         }
            
+
+        // Drain stamina if running
+        if (isRunning)
+        {
+            currentStamina -= staminaDrainRate * Time.deltaTime;
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sýnýrlandýr
+        }
     }
 
     void RotateTowardsMouse()
@@ -79,4 +104,48 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
         }
     }
+
+    void UpdateStamina()
+    {
+        // Regenerate stamina when not running
+        if (!Input.GetKey(KeyCode.LeftShift) || currentStamina <= 0)
+        {
+            currentStamina += staminaRegenRate * Time.deltaTime;
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sýnýrlandýr
+        }
+
+        UpdateStaminaBar(); // Slider'ý güncelle
+    }
+
+    void UpdateStaminaBar()
+    {
+        if (staminaBar != null)
+        {
+            staminaBar.value = currentStamina; // Slider'ý normalize et
+            staminaBar.maxValue = maxStamina;
+        }
+    }
+    public void BuyIncreaseMaxStamina(int cost)
+    {
+        if (financeManager.SpendSoul(cost))
+        {
+            maxStamina += 10;
+            staminaBar.maxValue = maxStamina;
+            UpdateStaminaBar();
+        }
+    }
+    public void BuyStaminaRegenRate(int cost)
+    {
+        if (financeManager != null && financeManager.SpendSoul(cost))
+        {
+            staminaRegenRate += ((staminaRegenRate * 2) / 10);
+
+            Debug.Log("Firerate increased by %20!");
+        }
+        else
+        {
+            Debug.Log("Not enough souls to increase Firerate!");
+        }
+    }
+
 }
