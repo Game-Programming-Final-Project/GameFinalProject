@@ -59,7 +59,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 355502ed147ce0f44b33d9c7ab1dca06, type: 2}
+      objectReference: {fileID: 9100000, guid: b96483bad95afb5469743561c4bdaace, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e408e5996e75842b22016bf1c9ba43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 7869277665217412619}
   player: {fileID: 0}
   moveSpeed: 4
   damage: 10
@@ -129,9 +130,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf3eb65c98bf64438b1adf5b7934751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 7869277665217412619}
   maxHealth: 30
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
   buyhealth: 10
   BuyMaxHealth: 10
   soulValueEnemy: 5
+--- !u!95 &7869277665217412619 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: c0e8ec4be6a4d554881a5c8bb6d0c0cf, type: 3}
+  m_PrefabInstance: {fileID: 4350442047513183130}
+  m_PrefabAsset: {fileID: 0}

@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
+    public Animator animator;
     public Transform player; // Reference to the player's transform
     public float moveSpeed = 3f; // Speed at which the enemy moves towards the player
     public float damage = 10f;  // Düþmanýn vereceði hasar
     private bool isPlayerInRange = false; // Oyuncu trigger alanýnda mý?
     private float damageCooldown = 1f; // 1 saniye aralýkla hasar verme
     private float lastDamageTime = 0f; // Son hasar verme zamaný
+    public float stopDistance = 2f;
 
     void Start()
     {
@@ -29,8 +31,15 @@ public class EnemyAI : MonoBehaviour
     {
         if (player != null)
         {
-            MoveTowardsPlayer();
-            RotateTowardsPlayer();
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+            if (distanceToPlayer > stopDistance) // Eðer minimum mesafenin üzerindeyse yaklaþ
+            {
+                MoveTowardsPlayer();
+                RotateTowardsPlayer();
+            }
+            else
+                animator.SetTrigger("EnemyAttackTrigger");
 
             // Eðer oyuncu trigger alanýnda ve yeterince zaman geçmiþse hasar ver
             if (isPlayerInRange && Time.time - lastDamageTime >= damageCooldown)

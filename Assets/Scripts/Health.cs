@@ -68,8 +68,10 @@ public class Health : MonoBehaviour
         }
         else
         {
+            DisableEnemyPhysics();
             Destroy(gameObject,2); // Düþman yok edilir
             financeManager.AddSoul(soulValueEnemy); // Soul ekle
+            animator.SetTrigger("EnemyDeathTrigger");
         }
     }
     
@@ -155,5 +157,22 @@ public class Health : MonoBehaviour
     public float getMaxHealth()
     {
         return maxHealth;
+    }
+
+    private void DisableEnemyPhysics()
+    {
+        // Düþmanýn çarpýþmalarýný devre dýþý býrak
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (var collider in colliders)
+        {
+            collider.enabled = false; // Tüm collider'larý devre dýþý býrak
+        }
+
+        // AI veya hareket sistemlerini kapatma (eðer düþman sadece fiziksel olarak durmalýysa)
+        EnemyAI enemyAI = GetComponent<EnemyAI>();
+        if (enemyAI != null)
+        {
+            enemyAI.enabled = false;
+        }
     }
 }

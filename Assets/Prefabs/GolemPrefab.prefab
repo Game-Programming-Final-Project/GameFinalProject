@@ -9,6 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6439363235914578110}
+  - component: {fileID: -8488353175784687182}
+  - component: {fileID: -3521869109806066659}
+  - component: {fileID: -2246167907810662578}
   m_Layer: 0
   m_Name: GolemPrefab
   m_TagString: Enemy
@@ -32,6 +35,62 @@ Transform:
   - {fileID: 6393962119614867852}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-8488353175784687182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9119829035981293291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6e408e5996e75842b22016bf1c9ba43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: -2246167907810662578}
+  player: {fileID: 0}
+  moveSpeed: 3
+  damage: 10
+--- !u!114 &-3521869109806066659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9119829035981293291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf3eb65c98bf64438b1adf5b7934751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: -2246167907810662578}
+  maxHealth: 100
+  gameOverScreen: {fileID: 0}
+  healthBar: {fileID: 0}
+  buyhealth: 10
+  BuyMaxHealth: 10
+  soulValueEnemy: 1
+--- !u!95 &-2246167907810662578
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9119829035981293291}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: d19f0e375a0203a4ca72964404dbd39e, type: 3}
+  m_Controller: {fileID: 9100000, guid: 46b863770b0b07a41b0bd29637994634, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &6393962119615001386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -176,6 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e408e5996e75842b22016bf1c9ba43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   player: {fileID: 0}
   moveSpeed: 3
   damage: 30
@@ -191,6 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf3eb65c98bf64438b1adf5b7934751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   maxHealth: 150
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}

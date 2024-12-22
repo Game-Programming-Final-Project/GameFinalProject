@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -6310838798901760474}
   - component: {fileID: -5083142551478875449}
   - component: {fileID: -7923598649050780531}
+  - component: {fileID: -9057610578344868175}
   m_Layer: 0
   m_Name: Creep1
   m_TagString: Enemy
@@ -48,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e408e5996e75842b22016bf1c9ba43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: -9057610578344868175}
   player: {fileID: 0}
   moveSpeed: 6
   damage: 15
@@ -86,12 +88,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf3eb65c98bf64438b1adf5b7934751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: -9057610578344868175}
   maxHealth: 40
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
   buyhealth: 10
   BuyMaxHealth: 10
   soulValueEnemy: 15
+--- !u!95 &-9057610578344868175
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2349454901748308927}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 055d3fd7bd3901042a44bb13f3160e0e, type: 3}
+  m_Controller: {fileID: 9100000, guid: 355502ed147ce0f44b33d9c7ab1dca06, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1538110141042390285
 PrefabInstance:
   m_ObjectHideFlags: 0

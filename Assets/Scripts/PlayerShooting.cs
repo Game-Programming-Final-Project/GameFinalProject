@@ -11,7 +11,7 @@ public class PlayerShooting : MonoBehaviour
     public float bulletSpeed = 10f; // Mermi h�z�
     public int maxAmmo = 30; // Maksimum mermi say�s�
     private int currentAmmo; // �u anki mermi say�s�
-    public float reloadTime = 1f; // Reload s�resi
+    public float reloadTime = 2.5f; // Reload s�resi
     private bool isReloading = false;
     public float bulletSpawnHeight = 3f;
     public float gunRange = 10f;
