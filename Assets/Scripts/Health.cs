@@ -1,9 +1,11 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
+    public Animator animator;
     public float maxHealth = 100; // Maksimum can deðeri
     private float currentHealth; // Þu anki can deðeri
     public GameObject gameOverScreen;
@@ -12,7 +14,6 @@ public class Health : MonoBehaviour
     public int buyhealth = 10;
     public int BuyMaxHealth = 10;
     public int soulValueEnemy = 1;
-    
 
     void Start()
     {
@@ -26,15 +27,16 @@ public class Health : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.maxValue = maxHealth;
+            healthBar.minValue = 0;
             healthBar.value = currentHealth;
         }
     }
-    
-  
+
 
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        currentHealth = Mathf.Max(currentHealth, 0);
 
         if (healthBar != null)
         {
@@ -51,14 +53,26 @@ public class Health : MonoBehaviour
     {
         if (gameObject.CompareTag("Player")) // Eðer ölen oyuncuysa
         {
-            GameOver();
+            PlayerController playerController = GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.IsPlayerDead();
+            }
+            animator.ResetTrigger("RunTrigger");
+            animator.ResetTrigger("ShootTrigger");
+            animator.ResetTrigger("RunFastTrigger");
+            animator.SetTrigger("IdleTrigger");
+            
+            animator.SetTrigger("DieTrigger");
+            StartCoroutine(WaitAndGameOver());
         }
         else
         {
-            Destroy(gameObject); // Düþman yok edilir
+            Destroy(gameObject,2); // Düþman yok edilir
             financeManager.AddSoul(soulValueEnemy); // Soul ekle
         }
     }
+    
 
     private void GameOver()
     {
@@ -67,6 +81,11 @@ public class Health : MonoBehaviour
         {
             gameOverScreen.SetActive(true);
         }
+    }
+    private IEnumerator WaitAndGameOver()
+    {
+        yield return new WaitForSeconds(2f);
+        GameOver();
     }
 
     // Market Özellikleri

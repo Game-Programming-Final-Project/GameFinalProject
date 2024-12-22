@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+
     public float walkSpeed = 5f;
     public float runSpeed = 10f;
     public Animator animator;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public float staminaRegenRate = 5f;  // Koþmayý býraktýðýnda saniyede dolan stamina miktarý
     public TextMeshProUGUI healthcounter;
     public Slider staminaBar;       // Stamina bar slider
+    private bool isDead;
 
     void Start()
     {
@@ -31,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
         healthcounter.text = health.getCurrentHealth() + "/" + health.getMaxHealth();
         MovePlayer();
         RotateTowardsMouse();
@@ -139,6 +142,11 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Not enough souls to increase Firerate!");
         }
+    }
+    public void IsPlayerDead()
+    {
+        isDead = true;
+
     }
 
 }
