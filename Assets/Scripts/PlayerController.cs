@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public float walkSpeed = 5f;
     public float runSpeed = 10f;
-
+    public Animator animator;
     private Camera mainCamera;
     private Health health;
     private FinanceManager financeManager;
@@ -52,6 +52,27 @@ public class PlayerController : MonoBehaviour
 
         // Apply movement directly to the transform
         transform.position += movement * speed * Time.deltaTime;
+
+        if (movement.magnitude > 0)
+        {
+            if (isRunning)
+            {
+                animator.ResetTrigger("RunTrigger");
+                animator.SetTrigger("RunFastTrigger");
+            }
+            else
+            {
+                animator.ResetTrigger("RunFastTrigger");
+                animator.SetTrigger("RunTrigger");
+            }
+        }
+
+        else
+        {
+            animator.ResetTrigger("RunTrigger");
+            animator.ResetTrigger("RunFastTrigger");
+            animator.SetTrigger("IdleTrigger");
+        }
 
         // Drain stamina if running
         if (isRunning)

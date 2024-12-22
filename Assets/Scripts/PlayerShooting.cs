@@ -6,6 +6,7 @@ using TMPro;
 
 public class PlayerShooting : MonoBehaviour
 {
+    public Animator animator;
     public GameObject bulletPrefab; // Mermi prefab'�
     public float bulletSpeed = 10f; // Mermi h�z�
     public int maxAmmo = 30; // Maksimum mermi say�s�
@@ -59,6 +60,8 @@ public class PlayerShooting : MonoBehaviour
         // Player'�n y�n�n� al (bakt��� y�n)
         Vector3 direction = transform.forward;  // Oyuncunun bakt��� y�n (3D oyun i�in)
 
+        animator.SetTrigger("ShootTrigger");
+
         // Mermiyi instantiate et
         GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(0, bulletSpawnHeight, 0), Quaternion.identity);
 
@@ -87,6 +90,7 @@ public class PlayerShooting : MonoBehaviour
     IEnumerator Reload()
     {
         isReloading = true;
+        animator.SetTrigger("ReloadTrigger");
         ammoText.text = "RELOADING...";
         yield return new WaitForSeconds(reloadTime); // Reload s�resi
         currentAmmo = maxAmmo;
