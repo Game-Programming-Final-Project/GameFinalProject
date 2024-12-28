@@ -92,7 +92,6 @@ public class PlayerShooting : MonoBehaviour
         isReloading = true;
         animator.SetTrigger("ReloadTrigger");
         ammoText.text = "RELOADING...";
-        animator.SetTrigger("ReloadTrigger");
         yield return new WaitForSeconds(reloadTime); // Reload s�resi
         currentAmmo = maxAmmo;
         ammoText.text = "BULLET= " + currentAmmo + "/30";

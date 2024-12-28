@@ -67,13 +67,9 @@ public class SpawnManager : MonoBehaviour
             // Wave'e göre rastgele bir düþman seç
             GameObject enemyToSpawn = enemyPrefabs[Random.Range(0, maxEnemyIndex)];
 
-            // Oyuncudan uygun uzaklýkta rastgele bir spawn pozisyonu al
             Vector3 spawnPosition = GetRandomSpawnPosition();
-
-            // Düþmaný instantiate et
             Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
 
-            // Spawn aralýðýný bekle
             yield return new WaitForSeconds(spawnInterval);
         }
     }
@@ -138,8 +134,6 @@ public class SpawnManager : MonoBehaviour
     Vector3 GetRandomSpawnPosition()
     {
         Vector3 randomPosition;
-
-        // Rastgele bir pozisyon seç ve oyuncunun minimum mesafesini kontrol et
         do
         {
             Vector2 randomCircle = Random.insideUnitCircle * spawnRadius; // Rastgele 2D pozisyon

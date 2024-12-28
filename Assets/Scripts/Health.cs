@@ -1,22 +1,23 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    public float maxHealth = 100; // Maksimum can deï¿½eri
-    private float currentHealth; // ï¿½u anki can deï¿½eri
+    public Animator animator;
+    public float maxHealth = 100; // Maksimum can deðeri
+    private float currentHealth; // Þu anki can deðeri
     public GameObject gameOverScreen;
-    public Slider healthBar; // Saï¿½lï¿½k ï¿½ubuï¿½u slider referansï¿½
+    public Slider healthBar; // Saðlýk çubuðu slider referansý
     private FinanceManager financeManager;
     public int buyhealth = 10;
     public int BuyMaxHealth = 10;
     public int soulValueEnemy = 1;
-    
 
     void Start()
     {
-        financeManager = FindObjectOfType<FinanceManager>(); // FinanceManager referansï¿½nï¿½ bul
+        financeManager = FindObjectOfType<FinanceManager>(); // FinanceManager referansýný bul
         if (financeManager == null)
         {
             Debug.LogError("FinanceManager is missing in the scene!");
@@ -26,15 +27,16 @@ public class Health : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.maxValue = maxHealth;
+            healthBar.minValue = 0;
             healthBar.value = currentHealth;
         }
     }
-    
-  
+
 
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        currentHealth = Mathf.Max(currentHealth, 0);
 
         if (healthBar != null)
         {
@@ -49,16 +51,30 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        if (gameObject.CompareTag("Player")) // Eï¿½er ï¿½len oyuncuysa
+        if (gameObject.CompareTag("Player")) // Eðer ölen oyuncuysa
         {
-            GameOver();
+            PlayerController playerController = GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.IsPlayerDead();
+            }
+            animator.ResetTrigger("RunTrigger");
+            animator.ResetTrigger("ShootTrigger");
+            animator.ResetTrigger("RunFastTrigger");
+            animator.SetTrigger("IdleTrigger");
+            
+            animator.SetTrigger("DieTrigger");
+            StartCoroutine(WaitAndGameOver());
         }
         else
         {
-            Destroy(gameObject); // Dï¿½ï¿½man yok edilir
+            DisableEnemyPhysics();
+            Destroy(gameObject,2); // Düþman yok edilir
             financeManager.AddSoul(soulValueEnemy); // Soul ekle
+            animator.SetTrigger("EnemyDeathTrigger");
         }
     }
+    
 
     private void GameOver()
     {
@@ -68,8 +84,13 @@ public class Health : MonoBehaviour
             gameOverScreen.SetActive(true);
         }
     }
+    private IEnumerator WaitAndGameOver()
+    {
+        yield return new WaitForSeconds(2f);
+        GameOver();
+    }
 
-    // Market ï¿½zellikleri
+    // Market Özellikleri
     public void BuyFullHeal(int cost)
     {
         if (financeManager != null && financeManager.SpendSoul(cost)) // Soul yeterli mi kontrol et
@@ -109,11 +130,11 @@ public class Health : MonoBehaviour
         }
     }
 
-    // Can ekleme ve iyileï¿½tirme metodlarï¿½
+    // Can ekleme ve iyileþtirme metodlarý
     public void Heal(int amount)
     {
         currentHealth += amount;
-        currentHealth = Mathf.Min(currentHealth, maxHealth); // Can maksimum deï¿½eri aï¿½amaz
+        currentHealth = Mathf.Min(currentHealth, maxHealth); // Can maksimum deðeri aþamaz
         healthBar.value = currentHealth;
     }
 
@@ -136,5 +157,22 @@ public class Health : MonoBehaviour
     public float getMaxHealth()
     {
         return maxHealth;
+    }
+
+    private void DisableEnemyPhysics()
+    {
+        // Düþmanýn çarpýþmalarýný devre dýþý býrak
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (var collider in colliders)
+        {
+            collider.enabled = false; // Tüm collider'larý devre dýþý býrak
+        }
+
+        // AI veya hareket sistemlerini kapatma (eðer düþman sadece fiziksel olarak durmalýysa)
+        EnemyAI enemyAI = GetComponent<EnemyAI>();
+        if (enemyAI != null)
+        {
+            enemyAI.enabled = false;
+        }
     }
 }

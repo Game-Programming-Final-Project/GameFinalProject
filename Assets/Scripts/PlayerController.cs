@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+
     public float walkSpeed = 5f;
     public float runSpeed = 10f;
     public Animator animator;
@@ -12,9 +13,9 @@ public class PlayerController : MonoBehaviour
     private FinanceManager financeManager;
     [Header("Stamina Settings")]
     public float maxStamina = 100f; // Maksimum stamina
-    public float currentStamina;   // ï¿½u anki stamina
-    public float staminaDrainRate = 10f; // Koï¿½arken saniyede azalan stamina miktarï¿½
-    public float staminaRegenRate = 5f;  // Koï¿½mayï¿½ bï¿½raktï¿½ï¿½ï¿½nda saniyede dolan stamina miktarï¿½
+    public float currentStamina;   // Þu anki stamina
+    public float staminaDrainRate = 10f; // Koþarken saniyede azalan stamina miktarý
+    public float staminaRegenRate = 5f;  // Koþmayý býraktýðýnda saniyede dolan stamina miktarý
     public TextMeshProUGUI healthcounter;
     public Slider staminaBar;       // Stamina bar slider
     private bool isDead;
@@ -25,8 +26,8 @@ public class PlayerController : MonoBehaviour
         financeManager = FindObjectOfType<FinanceManager>();
         mainCamera = Camera.main;
         Cursor.lockState = CursorLockMode.Confined; // Keep the cursor within the game window
-        currentStamina = maxStamina; // Baï¿½langï¿½ï¿½ta maksimum stamina
-        UpdateStaminaBar();          // Stamina barï¿½nï¿½ gï¿½ncelle
+        currentStamina = maxStamina; // Baþlangýçta maksimum stamina
+        UpdateStaminaBar();          // Stamina barýný güncelle
         
     }
 
@@ -36,24 +37,20 @@ public class PlayerController : MonoBehaviour
         healthcounter.text = health.getCurrentHealth() + "/" + health.getMaxHealth();
         MovePlayer();
         RotateTowardsMouse();
-        UpdateStamina();             // Stamina deï¿½erlerini gï¿½ncelle
-        //if (Input.GetMouseButtonDown(0))
-        //    animator.SetTrigger("ShootTrigger");
+        UpdateStamina();             // Stamina deðerlerini güncelle
     }
 
     void MovePlayer()
     {
-           
         // Input for movement
         float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right Arrow
         float vertical = Input.GetAxis("Vertical");   // W/S or Up/Down Arrow
-        
+
         // Calculate movement direction
         Vector3 movement = new Vector3(horizontal, 0, vertical).normalized;
 
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        
-        // Determine speed based on Shift key
+        // Determine speed based on Shift key and stamina availability
+        bool isRunning = Input.GetKey(KeyCode.LeftShift) && currentStamina > 0.1;
         float speed = isRunning ? runSpeed : walkSpeed;
 
         // Apply movement directly to the transform
@@ -84,7 +81,7 @@ public class PlayerController : MonoBehaviour
         if (isRunning)
         {
             currentStamina -= staminaDrainRate * Time.deltaTime;
-            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sï¿½nï¿½rlandï¿½r
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sýnýrlandýr
         }
     }
 
@@ -110,17 +107,17 @@ public class PlayerController : MonoBehaviour
         if (!Input.GetKey(KeyCode.LeftShift) || currentStamina <= 0)
         {
             currentStamina += staminaRegenRate * Time.deltaTime;
-            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sï¿½nï¿½rlandï¿½r
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sýnýrlandýr
         }
 
-        UpdateStaminaBar(); // Slider'ï¿½ gï¿½ncelle
+        UpdateStaminaBar(); // Slider'ý güncelle
     }
 
     void UpdateStaminaBar()
     {
         if (staminaBar != null)
         {
-            staminaBar.value = currentStamina; // Slider'ï¿½ normalize et
+            staminaBar.value = currentStamina; // Slider'ý normalize et
             staminaBar.maxValue = maxStamina;
         }
     }
