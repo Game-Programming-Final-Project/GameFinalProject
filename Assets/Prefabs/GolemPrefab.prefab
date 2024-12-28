@@ -102,19 +102,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400038, guid: d19f0e375a0203a4ca72964404dbd39e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.8829886
       objectReference: {fileID: 0}
     - target: {fileID: 400038, guid: d19f0e375a0203a4ca72964404dbd39e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400038, guid: d19f0e375a0203a4ca72964404dbd39e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.46939448
       objectReference: {fileID: 0}
     - target: {fileID: 400038, guid: d19f0e375a0203a4ca72964404dbd39e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400038, guid: d19f0e375a0203a4ca72964404dbd39e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -122,7 +122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400038, guid: d19f0e375a0203a4ca72964404dbd39e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -55.99
       objectReference: {fileID: 0}
     - target: {fileID: 400038, guid: d19f0e375a0203a4ca72964404dbd39e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -183,9 +183,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 6393962119605536330}
   player: {fileID: 0}
-  moveSpeed: 3
+  moveSpeed: 5
   damage: 30
-  stopDistance: 2
+  stopDistance: 3
   bossSpawnDelay: 3
 --- !u!114 &3066318873375970269
 MonoBehaviour:
@@ -200,12 +200,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 6393962119605536330}
-  maxHealth: 150
+  maxHealth: 1000
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
   buyhealth: 10
   BuyMaxHealth: 10
-  soulValueEnemy: 30
+  soulValueEnemy: 100
+  isPlayerAlive: 1
 --- !u!65 &5721974369272797109
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -225,5 +226,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.87, y: 1.15, z: 0.3}
-  m_Center: {x: 0, y: 0.57, z: -0.09}
+  m_Size: {x: 0.87, y: 1.15, z: 0.5396112}
+  m_Center: {x: -0.0000000013546104, y: 0.57, z: 0.029805997}

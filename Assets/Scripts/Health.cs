@@ -14,9 +14,12 @@ public class Health : MonoBehaviour
     public int buyhealth = 10;
     public int BuyMaxHealth = 10;
     public int soulValueEnemy = 1;
+    private PlayerController playerController;
+    public bool isPlayerAlive = true;
 
     void Start()
     {
+        playerController = GetComponent<PlayerController>();
         financeManager = FindObjectOfType<FinanceManager>(); // FinanceManager referansýný bul
         if (financeManager == null)
         {
@@ -35,12 +38,16 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+
         currentHealth -= damage;
+
         currentHealth = Mathf.Max(currentHealth, 0);
+        
 
         if (healthBar != null)
         {
             healthBar.value = currentHealth;
+            playerController.UpdateHealtCounter();
         }
 
         if (currentHealth <= 0)
@@ -53,6 +60,19 @@ public class Health : MonoBehaviour
     {
         if (gameObject.CompareTag("Player")) // Eðer ölen oyuncuysa
         {
+            isPlayerAlive = false;
+            GameObject[] remainingEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (GameObject enemy in remainingEnemies)
+            {
+                Destroy(enemy);
+            }
+            GameObject[] remainingBoss = GameObject.FindGameObjectsWithTag("Boss");
+            foreach (GameObject boss in remainingBoss)
+            {
+                Destroy(boss);
+            }
+
+
             PlayerController playerController = GetComponent<PlayerController>();
             if (playerController != null)
             {
@@ -61,6 +81,7 @@ public class Health : MonoBehaviour
             animator.ResetTrigger("RunTrigger");
             animator.ResetTrigger("ShootTrigger");
             animator.ResetTrigger("RunFastTrigger");
+            animator.ResetTrigger("ReloadTrigger");
             animator.SetTrigger("IdleTrigger");
             
             animator.SetTrigger("DieTrigger");

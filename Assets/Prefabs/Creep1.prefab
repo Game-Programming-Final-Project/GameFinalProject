@@ -113,9 +113,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: -9057610578344868175}
   player: {fileID: 0}
-  moveSpeed: 6
+  moveSpeed: 5
   damage: 15
   stopDistance: 1
+  bossSpawnDelay: 2
 --- !u!1001 &1538110141042390285
 PrefabInstance:
   m_ObjectHideFlags: 0

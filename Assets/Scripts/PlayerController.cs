@@ -148,5 +148,9 @@ public class PlayerController : MonoBehaviour
         isDead = true;
 
     }
+    public void UpdateHealtCounter()
+    {
+        healthcounter.text = health.getCurrentHealth() + "/" + health.getMaxHealth();
+    }
 
 }

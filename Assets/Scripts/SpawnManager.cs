@@ -78,7 +78,7 @@ public class SpawnManager : MonoBehaviour
     public void SpawnBoss()
     {
         spawning = false; // Boss spawn edildiði için normal spawn iþlemi durduruluyor
-        Vector3 bossSpawnPosition = GetRandomSpawnPosition(); // Oyuncudan uzakta bir pozisyon belirle
+        Vector3 bossSpawnPosition = player.position - new Vector3(0, 0, -8); // Oyuncudan uzakta bir pozisyon belirle
         GameObject spawnedBoss = Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity); // Boss'u spawn et
 
         Debug.Log("Boss spawned!");
