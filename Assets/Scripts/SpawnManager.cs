@@ -12,7 +12,7 @@ public class SpawnManager : MonoBehaviour
     public float spawnRadius = 20f; // Spawn yapýlacak maksimum yarýçap
     public float minSpawnDistance = 5f; // Oyuncunun minimum uzaklýðý
     public float spawnInterval = 2f; // Düþman spawn sýklýðý
-    public float waveDuration = 30f; // Her wave'in süresi
+    public float waveDuration = 10f; // Her wave'in süresi
 
     public Text waveTimerText; // UI'deki wave timer
     public GameObject marketPanel; // Market paneli
