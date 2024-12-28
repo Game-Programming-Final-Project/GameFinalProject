@@ -118,6 +118,7 @@ MonoBehaviour:
   player: {fileID: 0}
   moveSpeed: 4
   damage: 10
+  stopDistance: 1
 --- !u!114 &5052096909606279777
 MonoBehaviour:
   m_ObjectHideFlags: 0

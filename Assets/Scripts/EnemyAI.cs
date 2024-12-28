@@ -9,10 +9,18 @@ public class EnemyAI : MonoBehaviour
     private bool isPlayerInRange = false; // Oyuncu trigger alanýnda mý?
     private float damageCooldown = 1f; // 1 saniye aralýkla hasar verme
     private float lastDamageTime = 0f; // Son hasar verme zamaný
-    public float stopDistance = 2f;
+    public float stopDistance = 1.2f;
+    private bool canFollowPlayer = true;
+    public float bossSpawnDelay = 2f;
 
     void Start()
     {
+        if (gameObject.CompareTag("Boss")) // Eðer bu düþman bir boss ise
+        {
+            canFollowPlayer = false; // Ýlk baþta oyuncuyu takip etmesin
+            Invoke(nameof(EnableFollowForBoss), bossSpawnDelay); // Belirli süre sonra takip baþlasýn
+        }
+
         if (player == null) // Eðer player atanmadýysa
         {
             GameObject playerObject = GameObject.FindWithTag("Player");
@@ -25,11 +33,12 @@ public class EnemyAI : MonoBehaviour
                 Debug.LogWarning("Player object not found in the scene. Make sure the Player has the correct tag.");
             }
         }
+        
     }
 
     void Update()
     {
-        if (player != null)
+        if (player != null && canFollowPlayer)
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
@@ -90,7 +99,13 @@ public class EnemyAI : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            
             isPlayerInRange = false; // Oyuncu trigger alanýndan çýktý
         }
+    }
+    private void EnableFollowForBoss()
+    {
+        canFollowPlayer = true;
+        Debug.Log("Boss oyuncuyu takip etmeye baþladý.");
     }
 }
