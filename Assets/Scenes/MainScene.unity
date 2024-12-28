@@ -4321,8 +4321,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - {fileID: 3503437877381922507, guid: a85a1aa8afd3df8408ff60367dc44aef, type: 3}
+  - {fileID: 2349454901748308927, guid: ce49b96234701d04bad301d769c4ee38, type: 3}
   - {fileID: 8914286996971816111, guid: 877dc861ccb8af54a82af8e7768fd13c, type: 3}
-  - {fileID: 2547632407910942000, guid: af9f138ca1214ae41beb955d1406704e, type: 3}
   bossPrefab: {fileID: 9119829035981293291, guid: f7b459eb9e004f24e898bc1e0037ec7e, type: 3}
   player: {fileID: 2836004474555452728}
   spawnRadius: 40
