@@ -8,6 +8,7 @@ MonoImporter:
   - bulletPrefab: {instanceID: 0}
   - ammoText: {instanceID: 0}
   - reloadSound: {fileID: 8300000, guid: eca5d4bc6f35a78479cce37d51ae77ad, type: 3}
+  - backgroundMusic: {fileID: 8300000, guid: 3bab7c9841dcb1a4fa5f7007a11f46a5, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
