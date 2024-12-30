@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
     public Animator animator;
-    public float maxHealth = 100; // Maksimum can deðeri
-    private float currentHealth; // Þu anki can deðeri
+    public float maxHealth = 100; // Maksimum can deï¿½eri
+    private float currentHealth; // ï¿½u anki can deï¿½eri
     public GameObject gameOverScreen;
-    public Slider healthBar; // Saðlýk çubuðu slider referansý
+    public Slider healthBar; // Saï¿½lï¿½k ï¿½ubuï¿½u slider referansï¿½
     private FinanceManager financeManager;
     public int buyhealth = 10;
     public int BuyMaxHealth = 10;
@@ -17,10 +17,18 @@ public class Health : MonoBehaviour
     private PlayerController playerController;
     public bool isPlayerAlive = true;
 
+    public AudioSource audioSource; // Ses kaynaÄŸÄ± referansÄ±
+    public AudioClip damageSound;   // Hasar sesi
+    public AudioClip enemyDeathSound; // DÃ¼ÅŸman Ã¶ldÃ¼ÄŸÃ¼nde Ã§alÄ±nacak ses
+
     void Start()
     {
+        if (audioSource == null)
+   {
+    audioSource = GetComponent<AudioSource>();
+   }
         playerController = GetComponent<PlayerController>();
-        financeManager = FindObjectOfType<FinanceManager>(); // FinanceManager referansýný bul
+        financeManager = FindObjectOfType<FinanceManager>(); // FinanceManager referansï¿½nï¿½ bul
         if (financeManager == null)
         {
             Debug.LogError("FinanceManager is missing in the scene!");
@@ -38,6 +46,10 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (damageSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(damageSound);
+        }
 
         currentHealth -= damage;
 
@@ -58,7 +70,7 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        if (gameObject.CompareTag("Player")) // Eðer ölen oyuncuysa
+        if (gameObject.CompareTag("Player")) // Eï¿½er ï¿½len oyuncuysa
         {
             isPlayerAlive = false;
             GameObject[] remainingEnemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -89,8 +101,12 @@ public class Health : MonoBehaviour
         }
         else
         {
+            if (enemyDeathSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(enemyDeathSound); // DÃ¼ÅŸman Ã¶ldÃ¼ÄŸÃ¼nde ses Ã§al
+        }
             DisableEnemyPhysics();
-            Destroy(gameObject,2); // Düþman yok edilir
+            Destroy(gameObject,2); // Dï¿½ï¿½man yok edilir
             financeManager.AddSoul(soulValueEnemy); // Soul ekle
             animator.SetTrigger("EnemyDeathTrigger");
         }
@@ -111,7 +127,7 @@ public class Health : MonoBehaviour
         GameOver();
     }
 
-    // Market Özellikleri
+    // Market ï¿½zellikleri
     public void BuyFullHeal(int cost)
     {
         if (financeManager != null && financeManager.SpendSoul(cost)) // Soul yeterli mi kontrol et
@@ -151,11 +167,11 @@ public class Health : MonoBehaviour
         }
     }
 
-    // Can ekleme ve iyileþtirme metodlarý
+    // Can ekleme ve iyileï¿½tirme metodlarï¿½
     public void Heal(int amount)
     {
         currentHealth += amount;
-        currentHealth = Mathf.Min(currentHealth, maxHealth); // Can maksimum deðeri aþamaz
+        currentHealth = Mathf.Min(currentHealth, maxHealth); // Can maksimum deï¿½eri aï¿½amaz
         healthBar.value = currentHealth;
     }
 
@@ -182,14 +198,14 @@ public class Health : MonoBehaviour
 
     private void DisableEnemyPhysics()
     {
-        // Düþmanýn çarpýþmalarýný devre dýþý býrak
+        // Dï¿½ï¿½manï¿½n ï¿½arpï¿½ï¿½malarï¿½nï¿½ devre dï¿½ï¿½ï¿½ bï¿½rak
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (var collider in colliders)
         {
-            collider.enabled = false; // Tüm collider'larý devre dýþý býrak
+            collider.enabled = false; // Tï¿½m collider'larï¿½ devre dï¿½ï¿½ï¿½ bï¿½rak
         }
 
-        // AI veya hareket sistemlerini kapatma (eðer düþman sadece fiziksel olarak durmalýysa)
+        // AI veya hareket sistemlerini kapatma (eï¿½er dï¿½ï¿½man sadece fiziksel olarak durmalï¿½ysa)
         EnemyAI enemyAI = GetComponent<EnemyAI>();
         if (enemyAI != null)
         {
