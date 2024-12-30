@@ -3,7 +3,11 @@ guid: 61d720be034766744bd1388dec969eda
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - animator: {instanceID: 0}
+  - bulletPrefab: {instanceID: 0}
+  - ammoText: {instanceID: 0}
+  - reloadSound: {fileID: 8300000, guid: eca5d4bc6f35a78479cce37d51ae77ad, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

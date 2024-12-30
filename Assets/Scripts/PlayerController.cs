@@ -19,9 +19,10 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI healthcounter;
     public Slider staminaBar;       // Stamina bar slider
     private bool isDead;
-
+    
     void Start()
     {
+        
         health = GetComponent<Health>();
         financeManager = FindObjectOfType<FinanceManager>();
         mainCamera = Camera.main;

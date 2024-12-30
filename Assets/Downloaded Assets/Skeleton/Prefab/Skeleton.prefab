@@ -110,9 +110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e408e5996e75842b22016bf1c9ba43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   player: {fileID: 0}
   moveSpeed: 3
   damage: 10
+  stopDistance: 1.2
+  bossSpawnDelay: 2
 --- !u!114 &5859302113411034076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,9 +125,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8858051749441068820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e20370521a5ab654b9674002560f7f24, type: 3}
+  m_Script: {fileID: 11500000, guid: ebf3eb65c98bf64438b1adf5b7934751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  animator: {fileID: 0}
+  maxHealth: 100
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
+  buyhealth: 10
+  BuyMaxHealth: 10
+  soulValueEnemy: 1
+  isPlayerAlive: 1
+  audioSource: {fileID: 0}
+  damageSound: {fileID: 0}
+  enemyDeathSound: {fileID: 8300000, guid: caae0eed876086e43b8dd15f223503e6, type: 3}

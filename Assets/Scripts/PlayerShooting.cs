@@ -1,4 +1,3 @@
-
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,58 +6,61 @@ using TMPro;
 public class PlayerShooting : MonoBehaviour
 {
     public Animator animator;
-    public GameObject bulletPrefab; // Mermi prefab'�
-    public float bulletSpeed = 10f; // Mermi h�z�
-    public int maxAmmo = 30; // Maksimum mermi say�s�
-    private int currentAmmo; // �u anki mermi say�s�
-    public float reloadTime = 2.5f; // Reload s�resi
+    public GameObject bulletPrefab; // Mermi prefab'ı
+    public float bulletSpeed = 10f; // Mermi hızı
+    public int maxAmmo = 30; // Maksimum mermi sayısı
+    private int currentAmmo; // Şu anki mermi sayısı
+    public float reloadTime = 2.5f; // Reload süresi
     private bool isReloading = false;
     public float bulletSpawnHeight = 3f;
     public float gunRange = 10f;
-    public float fireRate = 0.2f; // Ate� etme gecikmesi
+    public float fireRate = 0.2f; // Ateş etme gecikmesi
     private float nextFireTime = 0f;
     private AudioSource audioSource;
     public TextMeshProUGUI ammoText;
     private FinanceManager financeManager;
     public int damage = 10;
-
-
+    public AudioClip reloadSound; // Reload ses klibi
+    public bool isGameActive = false; // Oyunun aktif olup olmadığını kontrol eden değişken
+    private Health health;
+    
     void Start()
     {
+        health = GetComponent<Health>();
+        
         financeManager = FindObjectOfType<FinanceManager>();
-        currentAmmo = maxAmmo; // Ba�lang��ta 30 mermi
-        audioSource = GetComponent<AudioSource>(); // AudioSource b
-
+        currentAmmo = maxAmmo; // Başlangıçta maksimum mermi
+        audioSource = GetComponent<AudioSource>(); // AudioSource bileşenini al
+        UpdateAmmoText();
     }
 
     void Update()
     {
-        
-        // E�er reloading yap�lm�yorsa ve mermi varsa sol t�kla ate� et
-        if (!isReloading && currentAmmo > 0 && Input.GetMouseButton(0))
+        bool playerstatus = health.GetPlayerStatus();
+
+        // Sol tık ile ateş
+        if (!isReloading && currentAmmo > 0 && Input.GetMouseButton(0) && playerstatus)
         {
-            ammoText.text = "BULLET= " + currentAmmo + "/" + maxAmmo;
             if (Time.time >= nextFireTime)
             {
                 FireBullet();
                 currentAmmo--;
-                nextFireTime = Time.time + fireRate; // Bir sonraki ate� etme zaman�
+                nextFireTime = Time.time + fireRate; // Bir sonraki ateş etme zamanı
+                UpdateAmmoText();
             }
         }
 
-        // E�er mermiler bitmi�se veya R tu�una bas�lm��sa reload i�lemi
-        if (Input.GetKeyDown(KeyCode.R) || currentAmmo <= 0)
+        // Eğer mermiler bitmişse veya R tuşuna basılmışsa reload işlemi
+        if ((Input.GetKeyDown(KeyCode.R) || currentAmmo <= 0) && !isReloading)
         {
-            if (!isReloading)
-                StartCoroutine(Reload());
+            StartCoroutine(Reload());
         }
     }
 
-    // Mouse y�n�ne ate� etme
     void FireBullet()
     {
-        // Player'�n y�n�n� al (bakt��� y�n)
-        Vector3 direction = transform.forward;  // Oyuncunun bakt��� y�n (3D oyun i�in)
+        // Player'ın baktığı yön
+        Vector3 direction = transform.forward;
 
         animator.SetTrigger("ShootTrigger");
 
@@ -69,42 +71,47 @@ public class PlayerShooting : MonoBehaviour
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // Mermiyi oyuncunun bakt��� y�nde hareket ettir
+            // Mermiyi hareket ettir
             rb.velocity = direction * bulletSpeed;
         }
         else
         {
             Debug.LogWarning("Rigidbody component not found on bullet prefab!");
         }
+
+        // Mermiyi yok et
         Destroy(bullet, gunRange);
+
+        // Mermi sesi çal
         if (audioSource != null)
         {
-            audioSource.Play();
+            audioSource.PlayOneShot(audioSource.clip);
         }
     }
 
-
-
-
-    // Reload i�lemi
     IEnumerator Reload()
     {
         isReloading = true;
         animator.SetTrigger("ReloadTrigger");
         ammoText.text = "RELOADING...";
-        yield return new WaitForSeconds(reloadTime); // Reload s�resi
+        if (audioSource != null && reloadSound != null)
+        {
+            audioSource.PlayOneShot(reloadSound);
+            
+        }
+
+        yield return new WaitForSeconds(reloadTime);
         currentAmmo = maxAmmo;
-        ammoText.text = "BULLET= " + currentAmmo + "/30";
+        UpdateAmmoText();
         isReloading = false;
     }
-
 
     public void BuyIncreaseMaxBullet(int cost)
     {
         if (financeManager != null && financeManager.SpendSoul(cost))
         {
             maxAmmo += 5;
-            ammoText.text = "BULLET= " + currentAmmo + "/" + maxAmmo;
+            UpdateAmmoText();
             Debug.Log("Max Bullet increased by +5!");
         }
         else
@@ -112,30 +119,30 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("Not enough souls to increase Max Health!");
         }
     }
+
     public void BuyIncreaseDamage(int cost)
     {
         if (financeManager != null && financeManager.SpendSoul(cost))
         {
             damage += 2;
-
-            Debug.Log("Max damage increased by +5!");
+            Debug.Log("Damage increased by +2!");
         }
         else
         {
-            Debug.Log("Not enough souls to increase Max Health!");
+            Debug.Log("Not enough souls to increase damage!");
         }
     }
+
     public void BuyIncreaseFireRate(int cost)
     {
         if (financeManager != null && financeManager.SpendSoul(cost))
         {
-            fireRate -= ((fireRate*2)/10);
-
-            Debug.Log("Firerate increased by %30!");
+            fireRate -= ((fireRate * 2) / 10);
+            Debug.Log("Fire rate increased by %20!");
         }
         else
         {
-            Debug.Log("Not enough souls to increase Max Health!");
+            Debug.Log("Not enough souls to increase fire rate!");
         }
     }
 
@@ -144,5 +151,18 @@ public class PlayerShooting : MonoBehaviour
         return damage;
     }
 
-}
+    public void StartGame()
+    {
+        isGameActive = true;
+    }
 
+    public void StopGame()
+    {
+        isGameActive = false;
+    }
+
+    private void UpdateAmmoText()
+    {
+        ammoText.text = "BULLET= " + currentAmmo + "/" + maxAmmo;
+    }
+}

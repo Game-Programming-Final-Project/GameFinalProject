@@ -183,10 +183,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 6393962119605536330}
   player: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 4.8
   damage: 30
   stopDistance: 3
-  bossSpawnDelay: 3
+  bossSpawnDelay: 4.5
 --- !u!114 &3066318873375970269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,13 +200,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 6393962119605536330}
-  maxHealth: 1000
+  maxHealth: 2000
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
   buyhealth: 10
   BuyMaxHealth: 10
   soulValueEnemy: 100
   isPlayerAlive: 1
+  audioSource: {fileID: 0}
+  damageSound: {fileID: 0}
+  enemyDeathSound: {fileID: 0}
+  PlayerDeathSound: {fileID: 0}
 --- !u!65 &5721974369272797109
 BoxCollider:
   m_ObjectHideFlags: 0

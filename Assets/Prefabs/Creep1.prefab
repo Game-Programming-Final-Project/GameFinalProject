@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -7923598649050780531}
   - component: {fileID: -9057610578344868175}
   - component: {fileID: 5571269859681462020}
+  - component: {fileID: 3432679830546496600}
   m_Layer: 0
   m_Name: Creep1
   m_TagString: Enemy
@@ -78,6 +79,11 @@ MonoBehaviour:
   buyhealth: 10
   BuyMaxHealth: 10
   soulValueEnemy: 15
+  isPlayerAlive: 1
+  audioSource: {fileID: 0}
+  damageSound: {fileID: 0}
+  enemyDeathSound: {fileID: 8300000, guid: d41110df60b80dc4b857a364b6802af9, type: 3}
+  PlayerDeathSound: {fileID: 0}
 --- !u!95 &-9057610578344868175
 Animator:
   serializedVersion: 5
@@ -113,10 +119,106 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: -9057610578344868175}
   player: {fileID: 0}
-  moveSpeed: 5
-  damage: 15
+  moveSpeed: 4.5
+  damage: 7
   stopDistance: 1
   bossSpawnDelay: 2
+--- !u!82 &3432679830546496600
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2349454901748308927}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1538110141042390285
 PrefabInstance:
   m_ObjectHideFlags: 0
