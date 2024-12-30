@@ -9,7 +9,8 @@ MonoImporter:
   - healthBar: {instanceID: 0}
   - audioSource: {instanceID: 0}
   - damageSound: {fileID: 8300000, guid: aa0fc60714a16cb4b8a88d46d348432a, type: 3}
-  - enemyDeathSound: {fileID: 8300000, guid: caae0eed876086e43b8dd15f223503e6, type: 3}
+  - enemyDeathSound: {fileID: 8300000, guid: d41110df60b80dc4b857a364b6802af9, type: 3}
+  - PlayerDeathSound: {fileID: 8300000, guid: 562b35abed1708e48b3686098cb1dcb0, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

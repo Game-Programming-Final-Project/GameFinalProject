@@ -20,6 +20,7 @@ public class Health : MonoBehaviour
     public AudioSource audioSource; // Ses kaynağı referansı
     public AudioClip damageSound;   // Hasar sesi
     public AudioClip enemyDeathSound; // Düşman öldüğünde çalınacak ses
+    public AudioClip PlayerDeathSound;
 
     void Start()
     {
@@ -68,49 +69,71 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void Die()
-    {
-        if (gameObject.CompareTag("Player")) // E�er �len oyuncuysa
+private void Die()
+{
+    if (gameObject.CompareTag("Player")) // Eğer ölen oyuncuysa
+    {   if (PlayerDeathSound != null && audioSource != null)
         {
-            isPlayerAlive = false;
-            GameObject[] remainingEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-            foreach (GameObject enemy in remainingEnemies)
-            {
-                Destroy(enemy);
-            }
-            GameObject[] remainingBoss = GameObject.FindGameObjectsWithTag("Boss");
-            foreach (GameObject boss in remainingBoss)
-            {
-                Destroy(boss);
-            }
-
-
-            PlayerController playerController = GetComponent<PlayerController>();
-            if (playerController != null)
-            {
-                playerController.IsPlayerDead();
-            }
-            animator.ResetTrigger("RunTrigger");
-            animator.ResetTrigger("ShootTrigger");
-            animator.ResetTrigger("RunFastTrigger");
-            animator.ResetTrigger("ReloadTrigger");
-            animator.SetTrigger("IdleTrigger");
-            
-            animator.SetTrigger("DieTrigger");
-            StartCoroutine(WaitAndGameOver());
+            audioSource.PlayOneShot(PlayerDeathSound);
         }
-        else
+        isPlayerAlive = false;
+        GameObject[] remainingEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in remainingEnemies)
         {
-            if (enemyDeathSound != null && audioSource != null)
+            Destroy(enemy);
+        }
+        GameObject[] remainingBoss = GameObject.FindGameObjectsWithTag("Boss");
+        foreach (GameObject boss in remainingBoss)
+        {
+            Destroy(boss);
+        }
+
+        PlayerController playerController = GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.IsPlayerDead();
+        }
+        animator.ResetTrigger("RunTrigger");
+        animator.ResetTrigger("ShootTrigger");
+        animator.ResetTrigger("RunFastTrigger");
+        animator.ResetTrigger("ReloadTrigger");
+        animator.SetTrigger("IdleTrigger");
+
+        animator.SetTrigger("DieTrigger");
+        StartCoroutine(WaitAndGameOver());
+    }
+    else if (gameObject.CompareTag("Enemy")) // Eğer ölen bir düşmansa
+    {
+        if (enemyDeathSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(enemyDeathSound); // Düşman öldüğünde ses çal
         }
-            DisableEnemyPhysics();
-            Destroy(gameObject,2); // D��man yok edilir
-            financeManager.AddSoul(soulValueEnemy); // Soul ekle
-            animator.SetTrigger("EnemyDeathTrigger");
-        }
+
+        DisableEnemyPhysics();
+        Destroy(gameObject, 2); // Düşman yok edilir
+        financeManager.AddSoul(soulValueEnemy); // Soul ekle
+        animator.SetTrigger("EnemyDeathTrigger");
     }
+    else // Eğer ölen bir boss ise
+    {
+        if (enemyDeathSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(enemyDeathSound); // Boss öldüğünde ses çal
+        }
+
+        // Boss'un parent'ı varsa, onu da yok et
+        Transform parentTransform = gameObject.transform.parent;
+        if (parentTransform != null)
+        {
+            Destroy(parentTransform.gameObject, 2); // Parent'ı yok et
+        }
+
+        DisableEnemyPhysics();
+        Destroy(gameObject, 2); // Boss yok edilir
+        financeManager.AddSoul(soulValueEnemy); // Soul ekle
+        animator.SetTrigger("EnemyDeathTrigger");
+    }
+}
     
 
     private void GameOver()
