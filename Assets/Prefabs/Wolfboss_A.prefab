@@ -940,8 +940,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 3533354461774365811}
   player: {fileID: 0}
-  moveSpeed: 6
-  damage: 20
+  moveSpeed: 5
+  damage: 10
   stopDistance: 2
   bossSpawnDelay: 2
 --- !u!114 &4643715986216328769
@@ -957,7 +957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3533354461774365811}
-  maxHealth: 70
+  maxHealth: 50
   gameOverScreen: {fileID: 0}
   healthBar: {fileID: 0}
   buyhealth: 10
@@ -967,6 +967,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   damageSound: {fileID: 0}
   enemyDeathSound: {fileID: 8300000, guid: d41110df60b80dc4b857a364b6802af9, type: 3}
+  PlayerDeathSound: {fileID: 0}
 --- !u!65 &7741708795761691718
 BoxCollider:
   m_ObjectHideFlags: 0

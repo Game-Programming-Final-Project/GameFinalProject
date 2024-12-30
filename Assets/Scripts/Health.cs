@@ -97,7 +97,7 @@ private void Die()
         animator.ResetTrigger("ShootTrigger");
         animator.ResetTrigger("RunFastTrigger");
         animator.ResetTrigger("ReloadTrigger");
-        animator.SetTrigger("IdleTrigger");
+        animator.ResetTrigger("IdleTrigger");
 
         animator.SetTrigger("DieTrigger");
         StartCoroutine(WaitAndGameOver());
@@ -234,5 +234,9 @@ private void Die()
         {
             enemyAI.enabled = false;
         }
+    }
+    public bool GetPlayerStatus()
+    {
+        return isPlayerAlive;
     }
 }

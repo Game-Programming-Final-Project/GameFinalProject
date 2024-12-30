@@ -532,7 +532,7 @@ MonoBehaviour:
   animator: {fileID: 7869277665217412619}
   player: {fileID: 0}
   moveSpeed: 4
-  damage: 10
+  damage: 5
   stopDistance: 1
   bossSpawnDelay: 2
 --- !u!114 &5052096909606279777
@@ -558,6 +558,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   damageSound: {fileID: 0}
   enemyDeathSound: {fileID: 8300000, guid: d41110df60b80dc4b857a364b6802af9, type: 3}
+  PlayerDeathSound: {fileID: 0}
 --- !u!82 &-2477719582892786653
 AudioSource:
   m_ObjectHideFlags: 0

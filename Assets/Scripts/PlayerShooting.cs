@@ -22,9 +22,12 @@ public class PlayerShooting : MonoBehaviour
     public int damage = 10;
     public AudioClip reloadSound; // Reload ses klibi
     public bool isGameActive = false; // Oyunun aktif olup olmadığını kontrol eden değişken
-
+    private Health health;
+    
     void Start()
     {
+        health = GetComponent<Health>();
+        
         financeManager = FindObjectOfType<FinanceManager>();
         currentAmmo = maxAmmo; // Başlangıçta maksimum mermi
         audioSource = GetComponent<AudioSource>(); // AudioSource bileşenini al
@@ -33,10 +36,10 @@ public class PlayerShooting : MonoBehaviour
 
     void Update()
     {
-       
+        bool playerstatus = health.GetPlayerStatus();
 
         // Sol tık ile ateş
-        if (!isReloading && currentAmmo > 0 && Input.GetMouseButton(0))
+        if (!isReloading && currentAmmo > 0 && Input.GetMouseButton(0) && playerstatus)
         {
             if (Time.time >= nextFireTime)
             {
@@ -94,6 +97,7 @@ public class PlayerShooting : MonoBehaviour
         if (audioSource != null && reloadSound != null)
         {
             audioSource.PlayOneShot(reloadSound);
+            
         }
 
         yield return new WaitForSeconds(reloadTime);
