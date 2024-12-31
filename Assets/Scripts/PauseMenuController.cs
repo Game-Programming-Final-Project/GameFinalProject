@@ -4,22 +4,22 @@ using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
-    public GameObject pauseMenu;      // Pause menu paneli
-    public GameObject controlsPanel; // Controls paneli
+    public GameObject pauseMenu;      
+    public GameObject controlsPanel; 
     public GameObject controlsMenuStart;
-    private bool isPaused = false;   // Oyunun duraklatýlýp duraklatýlmadýðýný takip eder
-    public GameObject startMenu;     // Start menu paneli
+    private bool isPaused = false;   
+    public GameObject startMenu;     
 
     private void Start()
     {
-        startMenu.SetActive(true);  // Baþlangýç menüsünü göster
-        pauseMenu.SetActive(false); // Pause menüsünü gizle
-        Time.timeScale = 0f;        // Oyun duraklatýlýr (Baþlangýçta oyun duraklatýlmalý)
+        startMenu.SetActive(true);  
+        pauseMenu.SetActive(false); 
+        Time.timeScale = 0f;        
     }
 
     void Update()
     {
-        // ESC tuþuna basýldýðýnda duraklatma menüsünü aç/kapat, ama baþlangýç menüsünde iken engelle
+        
         if (Input.GetKeyDown(KeyCode.Escape) && !startMenu.activeSelf && !controlsMenuStart.activeSelf)
         {
             if (isPaused)
@@ -29,63 +29,63 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
-    // Oyunu duraklat ve pause menüsünü göster
+   
     public void PauseGame()
     {
         isPaused = true;
-        Time.timeScale = 0f;          // Oyun duraklatýlýr
-        pauseMenu.SetActive(true);   // Pause menüsü açýlýr
+        Time.timeScale = 0f;          
+        pauseMenu.SetActive(true);   
     }
 
-    // Oyunu devam ettir ve pause menüsünü kapat
+   
     public void ResumeGame()
     {
         isPaused = false;
-        Time.timeScale = 1f;          // Oyun devam eder
-        pauseMenu.SetActive(false);  // Pause menüsü kapanýr
+        Time.timeScale = 1f;         
+        pauseMenu.SetActive(false); 
     }
 
-    // Oyunu yeniden baþlat
+   
     public void RestartGame()
     {
-        Time.timeScale = 1f; // Oyun hýzýný normale döndür
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Mevcut sahneyi yeniden yükle
+        Time.timeScale = 1f; 
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); 
     }
 
-    // Kontroller panelini göster
+    
     public void ShowControls()
     {
-        pauseMenu.SetActive(false);   // Pause menüsünü kapat
-        controlsPanel.SetActive(true); // Kontroller panelini aç
+        pauseMenu.SetActive(false);   
+        controlsPanel.SetActive(true); 
     }
 
-    // Kontrollerden pause menüsüne dön
+    
     public void BackToPauseMenu()
     {
-        controlsPanel.SetActive(false); // Kontroller panelini kapat
-        pauseMenu.SetActive(true);      // Pause menüsünü aç
+        controlsPanel.SetActive(false); 
+        pauseMenu.SetActive(true);      
     }
 
-    // Oyun baþlatma (Start Menu'den Play týklanýrsa)
+    
     public void PlayGame()
     {
-        startMenu.SetActive(false);  // Start menu'yi gizle
-        Time.timeScale = 1f;         // Oyun baþlar
+        startMenu.SetActive(false); 
+        Time.timeScale = 1f;         
     }
 
-    // Oyundan çýkma (Start Menu'den Exit týklanýrsa)
+    
     public void ExitGame()
     {
-        UnityEditor.EditorApplication.isPlaying = false;  // Oyunu kapat
+        UnityEditor.EditorApplication.isPlaying = false;  
     }
     public void BackToStartMenu()
     {
-        controlsMenuStart.SetActive(false); // Kontroller panelini kapat
-        startMenu.SetActive(true);      // Pause menüsünü aç
+        controlsMenuStart.SetActive(false); 
+        startMenu.SetActive(true);      
     }
     public void ShowControlsStart()
     {
-        startMenu.SetActive(false);   // Pause menüsünü kapat
-        controlsMenuStart.SetActive(true); // Kontroller panelini aç
+        startMenu.SetActive(false);   
+        controlsMenuStart.SetActive(true); 
     }
 }

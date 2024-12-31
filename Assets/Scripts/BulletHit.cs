@@ -18,11 +18,11 @@ public class BulletHit : MonoBehaviour
             Health enemyHealth = other.GetComponent<Health>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(shooting.GetDamage()); // Düþmana hasar ver
+                enemyHealth.TakeDamage(shooting.GetDamage()); 
 
             }
 
-            Destroy(gameObject); // Mermiyi sahneden kaldýr
+            Destroy(gameObject); 
         }
     }
     
