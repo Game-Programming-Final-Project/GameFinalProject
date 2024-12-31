@@ -22,20 +22,43 @@ public class SpawnManager : MonoBehaviour
     public int totalWaves = 3; // Toplam wave sayýsý
     private float waveTimeRemaining; // Wave içinde kalan süre
 
+    // Müzik ile ilgili alanlar
+    public Slider volumeSlider;
+    public AudioClip backgroundMusic; // Ana müzik
+    public AudioClip bossMusic; // Boss müziði
+    private AudioSource audioSource; // Müzik için AudioSource
+
     void Start()
     {
         marketPanel.SetActive(false); // Market panelini gizle
         StartNewWave(); // Ýlk wave baþlasýn
+
+        // AudioSource'u baþlat ve ana müziði çal
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource != null && backgroundMusic != null)
+        {
+            audioSource.clip = backgroundMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = audioSource.volume;
+            volumeSlider.onValueChanged.AddListener(UpdateVolume);
+        }
+        else
+        {
+            Debug.LogWarning("Volume slider atanmadý.");
+        }
     }
 
     void Update()
     {
-        
         if (waveTimeRemaining > 0)
         {
             waveTimeRemaining -= Time.deltaTime; // Süreyi azalt
             waveTimerText.text = $"Time: {Mathf.Ceil(waveTimeRemaining)}"; // UI'yi güncelle
-            currentWaveText.text = "Wave:"+currentWave;
+            currentWaveText.text = "Wave:" + currentWave;
         }
         else if (spawning) // Wave süresi bittiðinde
         {
@@ -74,7 +97,6 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-
     public void SpawnBoss()
     {
         spawning = false; // Boss spawn edildiði için normal spawn iþlemi durduruluyor
@@ -82,6 +104,15 @@ public class SpawnManager : MonoBehaviour
         GameObject spawnedBoss = Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity); // Boss'u spawn et
 
         Debug.Log("Boss spawned!");
+
+        // Boss müziðini baþlat
+        if (audioSource != null && bossMusic != null)
+        {
+            audioSource.Stop(); // Ana müziði durdur
+            audioSource.clip = bossMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
 
         // BossManager'a boss'un spawn edildiðini bildir
         BossManager bossManager = FindObjectOfType<BossManager>();
@@ -95,10 +126,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-
     void EndWave()
     {
-        spawnInterval -= spawnInterval * (5/10);
+        spawnInterval -= spawnInterval * (5 / 10);
         Time.timeScale = 0f;
         spawning = false;
 
@@ -116,7 +146,6 @@ public class SpawnManager : MonoBehaviour
         if (currentWave >= totalWaves)
         {
             Debug.Log("All waves completed!");
-            // Oyunun bitiþ mantýðýný buraya ekleyebilirsiniz
         }
         else
         {
@@ -141,5 +170,12 @@ public class SpawnManager : MonoBehaviour
         } while (Vector3.Distance(player.position, randomPosition) < minSpawnDistance);
 
         return randomPosition;
+    }
+    public void UpdateVolume(float value)
+    {
+        if (audioSource != null)
+        {
+            audioSource.volume = value;
+        }
     }
 }
