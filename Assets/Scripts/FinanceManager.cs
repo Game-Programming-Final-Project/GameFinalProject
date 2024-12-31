@@ -27,7 +27,7 @@ public class FinanceManager : MonoBehaviour
             UpdateSoulUI();
             return true;
         }
-        return false; // Yeterli soul yok 
+        return false; 
     }
 
     private void UpdateSoulUI()

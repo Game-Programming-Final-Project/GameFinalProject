@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class BossManager : MonoBehaviour
 {
-    public GameObject winScreen; // WinScreen paneli
-    private GameObject bossInstance; // Sahnedeki boss instance'ý
-    private bool bossSpawned = false; // Boss'un spawn edilip edilmediðini takip eder
-    private Health playerHealth; // Player'ýn health component'i
+    public GameObject winScreen; 
+    private GameObject bossInstance; 
+    private bool bossSpawned = false; 
+    private Health playerHealth; 
 
     void Start()
     {
@@ -25,15 +25,15 @@ public class BossManager : MonoBehaviour
 
     void Update()
     {
-        if (!bossSpawned) return; // Eðer boss henüz spawn edilmemiþse, kontrol yapma
+        if (!bossSpawned) return; 
 
-        // Eðer oyuncu hayatta deðilse, hiçbir þey yapma
+        
         if (playerHealth != null && !playerHealth.isPlayerAlive)
         {
             return;
         }
 
-        // Eðer sahnede boss yoksa ve daha önce spawn edilmiþse
+        
         if (bossInstance == null)
         {
             OpenWinScreen();
@@ -42,15 +42,15 @@ public class BossManager : MonoBehaviour
 
     public void BossSpawned(GameObject spawnedBoss)
     {
-        bossInstance = spawnedBoss; // Spawn edilen boss referansý alýnýyor
-        bossSpawned = true; // Boss'un spawn edildiðini iþaretle
+        bossInstance = spawnedBoss; 
+        bossSpawned = true; 
     }
 
     private void OpenWinScreen()
     {
         if (winScreen != null)
         {
-            StartCoroutine(OpenWinScreenWithDelay()); // Coroutine baþlat
+            StartCoroutine(OpenWinScreenWithDelay()); 
         }
         else
         {
@@ -60,10 +60,10 @@ public class BossManager : MonoBehaviour
 
     private IEnumerator OpenWinScreenWithDelay()
     {
-        yield return new WaitForSeconds(2f); // 2 saniye bekle
-        winScreen.SetActive(true); // WinScreen'i aktif et
-        Time.timeScale = 0f; // Oyunu durdur
+        yield return new WaitForSeconds(2f); 
+        winScreen.SetActive(true); 
+        Time.timeScale = 0f; 
         Debug.Log("WinScreen opened!");
-        enabled = false; // Script'i devre dýþý býrak
+        enabled = false; 
     }
 }

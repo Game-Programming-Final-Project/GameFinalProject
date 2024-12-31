@@ -12,12 +12,12 @@ public class PlayerController : MonoBehaviour
     private Health health;
     private FinanceManager financeManager;
     [Header("Stamina Settings")]
-    public float maxStamina = 100f; // Maksimum stamina
-    public float currentStamina;   // Þu anki stamina
-    public float staminaDrainRate = 10f; // Koþarken saniyede azalan stamina miktarý
-    public float staminaRegenRate = 5f;  // Koþmayý býraktýðýnda saniyede dolan stamina miktarý
+    public float maxStamina = 100f; 
+    public float currentStamina;   
+    public float staminaDrainRate = 10f; 
+    public float staminaRegenRate = 5f;  
     public TextMeshProUGUI healthcounter;
-    public Slider staminaBar;       // Stamina bar slider
+    public Slider staminaBar;       
     private bool isDead;
     
     void Start()
@@ -26,9 +26,9 @@ public class PlayerController : MonoBehaviour
         health = GetComponent<Health>();
         financeManager = FindObjectOfType<FinanceManager>();
         mainCamera = Camera.main;
-        Cursor.lockState = CursorLockMode.Confined; // Keep the cursor within the game window
-        currentStamina = maxStamina; // Baþlangýçta maksimum stamina
-        UpdateStaminaBar();          // Stamina barýný güncelle
+        Cursor.lockState = CursorLockMode.Confined; 
+        currentStamina = maxStamina; 
+        UpdateStaminaBar();         
         
     }
 
@@ -38,23 +38,23 @@ public class PlayerController : MonoBehaviour
         healthcounter.text = health.getCurrentHealth() + "/" + health.getMaxHealth();
         MovePlayer();
         RotateTowardsMouse();
-        UpdateStamina();             // Stamina deðerlerini güncelle
+        UpdateStamina();            
     }
 
     void MovePlayer()
     {
-        // Input for movement
-        float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right Arrow
-        float vertical = Input.GetAxis("Vertical");   // W/S or Up/Down Arrow
+        
+        float horizontal = Input.GetAxis("Horizontal"); 
+        float vertical = Input.GetAxis("Vertical");  
 
-        // Calculate movement direction
+       
         Vector3 movement = new Vector3(horizontal, 0, vertical).normalized;
 
-        // Determine speed based on Shift key and stamina availability
+       
         bool isRunning = Input.GetKey(KeyCode.LeftShift) && currentStamina > 0.1;
         float speed = isRunning ? runSpeed : walkSpeed;
 
-        // Apply movement directly to the transform
+        
         transform.position += movement * speed * Time.deltaTime;
 
         if (movement.magnitude > 0)
@@ -78,17 +78,17 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("IdleTrigger");
         }
 
-        // Drain stamina if running
+        
         if (isRunning)
         {
             currentStamina -= staminaDrainRate * Time.deltaTime;
-            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sýnýrlandýr
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); 
         }
     }
 
     void RotateTowardsMouse()
     {
-        // Plane for mouse raycast
+        
         Plane playerPlane = new Plane(Vector3.up, transform.position);
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -104,21 +104,21 @@ public class PlayerController : MonoBehaviour
 
     void UpdateStamina()
     {
-        // Regenerate stamina when not running
+        
         if (!Input.GetKey(KeyCode.LeftShift) || currentStamina <= 0)
         {
             currentStamina += staminaRegenRate * Time.deltaTime;
-            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Sýnýrlandýr
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
         }
 
-        UpdateStaminaBar(); // Slider'ý güncelle
+        UpdateStaminaBar(); 
     }
 
     void UpdateStaminaBar()
     {
         if (staminaBar != null)
         {
-            staminaBar.value = currentStamina; // Slider'ý normalize et
+            staminaBar.value = currentStamina; 
             staminaBar.maxValue = maxStamina;
         }
     }

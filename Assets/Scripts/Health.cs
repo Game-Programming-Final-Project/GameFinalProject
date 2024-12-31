@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
     public Animator animator;
-    public float maxHealth = 100; // Maksimum can de�eri
-    private float currentHealth; // �u anki can de�eri
+    public float maxHealth = 100; 
+    private float currentHealth; 
     public GameObject gameOverScreen;
-    public Slider healthBar; // Sa�l�k �ubu�u slider referans�
+    public Slider healthBar; 
     private FinanceManager financeManager;
     public int buyhealth = 10;
     public int BuyMaxHealth = 10;
@@ -17,9 +17,9 @@ public class Health : MonoBehaviour
     private PlayerController playerController;
     public bool isPlayerAlive = true;
 
-    public AudioSource audioSource; // Ses kaynağı referansı
-    public AudioClip damageSound;   // Hasar sesi
-    public AudioClip enemyDeathSound; // Düşman öldüğünde çalınacak ses
+    public AudioSource audioSource; 
+    public AudioClip damageSound;   
+    public AudioClip enemyDeathSound; 
     public AudioClip PlayerDeathSound;
 
     void Start()
@@ -29,7 +29,7 @@ public class Health : MonoBehaviour
     audioSource = GetComponent<AudioSource>();
    }
         playerController = GetComponent<PlayerController>();
-        financeManager = FindObjectOfType<FinanceManager>(); // FinanceManager referans�n� bul
+        financeManager = FindObjectOfType<FinanceManager>(); 
         if (financeManager == null)
         {
             Debug.LogError("FinanceManager is missing in the scene!");
@@ -71,7 +71,7 @@ public class Health : MonoBehaviour
 
 private void Die()
 {
-    if (gameObject.CompareTag("Player")) // Eğer ölen oyuncuysa
+    if (gameObject.CompareTag("Player")) 
     {   if (PlayerDeathSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(PlayerDeathSound);
@@ -102,35 +102,35 @@ private void Die()
         animator.SetTrigger("DieTrigger");
         StartCoroutine(WaitAndGameOver());
     }
-    else if (gameObject.CompareTag("Enemy")) // Eğer ölen bir düşmansa
+    else if (gameObject.CompareTag("Enemy")) 
     {
         if (enemyDeathSound != null && audioSource != null)
         {
-            audioSource.PlayOneShot(enemyDeathSound); // Düşman öldüğünde ses çal
+            audioSource.PlayOneShot(enemyDeathSound); 
         }
 
         DisableEnemyPhysics();
-        Destroy(gameObject, 2); // Düşman yok edilir
-        financeManager.AddSoul(soulValueEnemy); // Soul ekle
+        Destroy(gameObject, 2); 
+        financeManager.AddSoul(soulValueEnemy); 
         animator.SetTrigger("EnemyDeathTrigger");
     }
-    else // Eğer ölen bir boss ise
+    else 
     {
         if (enemyDeathSound != null && audioSource != null)
         {
-            audioSource.PlayOneShot(enemyDeathSound); // Boss öldüğünde ses çal
+            audioSource.PlayOneShot(enemyDeathSound); 
         }
 
-        // Boss'un parent'ı varsa, onu da yok et
+        
         Transform parentTransform = gameObject.transform.parent;
         if (parentTransform != null)
         {
-            Destroy(parentTransform.gameObject, 2); // Parent'ı yok et
+            Destroy(parentTransform.gameObject, 2); 
         }
 
         DisableEnemyPhysics();
-        Destroy(gameObject, 2); // Boss yok edilir
-        financeManager.AddSoul(soulValueEnemy); // Soul ekle
+        Destroy(gameObject, 2); 
+        financeManager.AddSoul(soulValueEnemy);
         animator.SetTrigger("EnemyDeathTrigger");
     }
 }
@@ -150,10 +150,10 @@ private void Die()
         GameOver();
     }
 
-    // Market �zellikleri
+    
     public void BuyFullHeal(int cost)
     {
-        if (financeManager != null && financeManager.SpendSoul(cost)) // Soul yeterli mi kontrol et
+        if (financeManager != null && financeManager.SpendSoul(cost)) 
         {
             FullHeal();
             Debug.Log("Full Heal purchased!");
@@ -190,11 +190,11 @@ private void Die()
         }
     }
 
-    // Can ekleme ve iyile�tirme metodlar�
+   
     public void Heal(int amount)
     {
         currentHealth += amount;
-        currentHealth = Mathf.Min(currentHealth, maxHealth); // Can maksimum de�eri a�amaz
+        currentHealth = Mathf.Min(currentHealth, maxHealth); 
         healthBar.value = currentHealth;
     }
 
@@ -221,14 +221,14 @@ private void Die()
 
     private void DisableEnemyPhysics()
     {
-        // D��man�n �arp��malar�n� devre d��� b�rak
+        
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (var collider in colliders)
         {
-            collider.enabled = false; // T�m collider'lar� devre d��� b�rak
+            collider.enabled = false; 
         }
 
-        // AI veya hareket sistemlerini kapatma (e�er d��man sadece fiziksel olarak durmal�ysa)
+        
         EnemyAI enemyAI = GetComponent<EnemyAI>();
         if (enemyAI != null)
         {

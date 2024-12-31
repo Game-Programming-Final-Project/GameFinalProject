@@ -3,30 +3,30 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
     public Animator animator;
-    public Transform player; // Reference to the player's transform
-    public float moveSpeed = 3f; // Speed at which the enemy moves towards the player
-    public float damage = 10f;  // Düþmanýn vereceði hasar
-    private bool isPlayerInRange = false; // Oyuncu trigger alanýnda mý?
-    private float damageCooldown = 1f; // 1 saniye aralýkla hasar verme
-    private float lastDamageTime = 0f; // Son hasar verme zamaný
+    public Transform player; 
+    public float moveSpeed = 3f;
+    public float damage = 10f;  
+    private bool isPlayerInRange = false; 
+    private float damageCooldown = 1f; 
+    private float lastDamageTime = 0f; 
     public float stopDistance = 1.2f;
     private bool canFollowPlayer = true;
     public float bossSpawnDelay = 2f;
 
     void Start()
     {
-        if (gameObject.CompareTag("Boss")) // Eðer bu düþman bir boss ise
+        if (gameObject.CompareTag("Boss")) 
         {
-            canFollowPlayer = false; // Ýlk baþta oyuncuyu takip etmesin
-            Invoke(nameof(EnableFollowForBoss), bossSpawnDelay); // Belirli süre sonra takip baþlasýn
+            canFollowPlayer = false; 
+            Invoke(nameof(EnableFollowForBoss), bossSpawnDelay); 
         }
 
-        if (player == null) // Eðer player atanmadýysa
+        if (player == null) 
         {
             GameObject playerObject = GameObject.FindWithTag("Player");
             if (playerObject != null)
             {
-                player = playerObject.transform; // Oyuncunun Transform bileþenine eriþ
+                player = playerObject.transform; 
             }
             else
             {
@@ -42,7 +42,7 @@ public class EnemyAI : MonoBehaviour
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-            if (distanceToPlayer > stopDistance) // Eðer minimum mesafenin üzerindeyse yaklaþ
+            if (distanceToPlayer > stopDistance) 
             {
                 MoveTowardsPlayer();
                 RotateTowardsPlayer();
@@ -50,14 +50,14 @@ public class EnemyAI : MonoBehaviour
             else
                 animator.SetTrigger("EnemyAttackTrigger");
 
-            // Eðer oyuncu trigger alanýnda ve yeterince zaman geçmiþse hasar ver
+            
             if (isPlayerInRange && Time.time - lastDamageTime >= damageCooldown)
             {
                 Health playerHealth = player.GetComponent<Health>();
                 if (playerHealth != null)
                 {
-                    playerHealth.TakeDamage(damage); // Oyuncuya hasar ver
-                    lastDamageTime = Time.time; // Son hasar zamanýný güncelle
+                    playerHealth.TakeDamage(damage); 
+                    lastDamageTime = Time.time; 
                 }
             }
         }
@@ -65,33 +65,33 @@ public class EnemyAI : MonoBehaviour
 
     void MoveTowardsPlayer()
     {
-        // Oyuncuya doðru hareket yönünü hesapla
+        
         Vector3 direction = (player.position - transform.position).normalized;
-        direction.y = 0; // Düþmanýn dikey düzlemde hareket etmesini engelle
+        direction.y = 0; 
 
-        // Düþmaný oyuncuya doðru hareket ettir
+        
         transform.position += direction * moveSpeed * Time.deltaTime;
     }
 
     void RotateTowardsPlayer()
     {
-        // Oyuncuya doðru yönü hesapla
+       
         Vector3 direction = (player.position - transform.position).normalized;
-        direction.y = 0; // Dönüþü sadece XZ düzleminde tut
+        direction.y = 0; 
 
-        // Oyuncuya dönme rotasýný hesapla
+        
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        // Düþmaný yavaþça oyuncuya doðru döndür
+       
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
 
-    // Oyuncu ile temas halinde hasar ver
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInRange = true; // Oyuncu trigger alanýna girdi
+            isPlayerInRange = true; 
         }
     }
 
@@ -100,7 +100,7 @@ public class EnemyAI : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             
-            isPlayerInRange = false; // Oyuncu trigger alanýndan çýktý
+            isPlayerInRange = false; 
         }
     }
     private void EnableFollowForBoss()

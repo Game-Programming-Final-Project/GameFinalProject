@@ -6,34 +6,34 @@ using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject[] enemyPrefabs; // Düþman türleri
-    public GameObject bossPrefab; // Boss düþman prefab'ý
-    public Transform player; // Oyuncunun transform'u
-    public float spawnRadius = 20f; // Spawn yapýlacak maksimum yarýçap
-    public float minSpawnDistance = 5f; // Oyuncunun minimum uzaklýðý
-    public float spawnInterval = 2f; // Düþman spawn sýklýðý
-    public float waveDuration = 10f; // Her wave'in süresi
+    public GameObject[] enemyPrefabs; 
+    public GameObject bossPrefab; 
+    public Transform player; 
+    public float spawnRadius = 20f; 
+    public float minSpawnDistance = 5f; 
+    public float spawnInterval = 2f;
+    public float waveDuration = 10f;
 
-    public Text waveTimerText; // UI'deki wave timer
-    public GameObject marketPanel; // Market paneli
+    public Text waveTimerText; 
+    public GameObject marketPanel; 
     public TextMeshProUGUI currentWaveText;
-    public bool spawning = true; // Spawn iþlemi aktif mi?
-    public int currentWave = 1; // Þu anki wave
-    public int totalWaves = 3; // Toplam wave sayýsý
-    private float waveTimeRemaining; // Wave içinde kalan süre
+    public bool spawning = true; 
+    public int currentWave = 1; 
+    public int totalWaves = 3; 
+    private float waveTimeRemaining; 
 
     // Müzik ile ilgili alanlar
     public Slider volumeSlider;
-    public AudioClip backgroundMusic; // Ana müzik
-    public AudioClip bossMusic; // Boss müziði
-    private AudioSource audioSource; // Müzik için AudioSource
+    public AudioClip backgroundMusic; 
+    public AudioClip bossMusic; 
+    private AudioSource audioSource; 
 
     void Start()
     {
-        marketPanel.SetActive(false); // Market panelini gizle
-        StartNewWave(); // Ýlk wave baþlasýn
+        marketPanel.SetActive(false);
+        StartNewWave(); 
 
-        // AudioSource'u baþlat ve ana müziði çal
+        
         audioSource = GetComponent<AudioSource>();
         if (audioSource != null && backgroundMusic != null)
         {
@@ -56,11 +56,11 @@ public class SpawnManager : MonoBehaviour
     {
         if (waveTimeRemaining > 0)
         {
-            waveTimeRemaining -= Time.deltaTime; // Süreyi azalt
-            waveTimerText.text = $"Time: {Mathf.Ceil(waveTimeRemaining)}"; // UI'yi güncelle
+            waveTimeRemaining -= Time.deltaTime; 
+            waveTimerText.text = $"Time: {Mathf.Ceil(waveTimeRemaining)}"; 
             currentWaveText.text = "Wave:" + currentWave;
         }
-        else if (spawning) // Wave süresi bittiðinde
+        else if (spawning) 
         {
             EndWave();
         }
@@ -69,10 +69,10 @@ public class SpawnManager : MonoBehaviour
     public void StartNewWave()
     {
         spawning = true;
-        waveTimeRemaining = waveDuration; // Yeni wave için süreyi baþlat
-        if (currentWave == totalWaves) // Eðer son wave'deysek
+        waveTimeRemaining = waveDuration;
+        if (currentWave == totalWaves) 
         {
-            SpawnBoss(); // Boss düþmaný spawn et
+            SpawnBoss(); 
         }
         else
         {
@@ -84,10 +84,10 @@ public class SpawnManager : MonoBehaviour
     {
         while (spawning)
         {
-            // currentWave'i prefab sayýsýyla sýnýrlandýr
+            
             int maxEnemyIndex = Mathf.Min(currentWave, enemyPrefabs.Length);
 
-            // Wave'e göre rastgele bir düþman seç
+           
             GameObject enemyToSpawn = enemyPrefabs[Random.Range(0, maxEnemyIndex)];
 
             Vector3 spawnPosition = GetRandomSpawnPosition();
@@ -99,22 +99,22 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnBoss()
     {
-        spawning = false; // Boss spawn edildiði için normal spawn iþlemi durduruluyor
-        Vector3 bossSpawnPosition = player.position - new Vector3(0, 0, -8); // Oyuncudan uzakta bir pozisyon belirle
-        GameObject spawnedBoss = Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity); // Boss'u spawn et
+        spawning = false; 
+        Vector3 bossSpawnPosition = player.position - new Vector3(0, 0, -8); 
+        GameObject spawnedBoss = Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity); 
 
         Debug.Log("Boss spawned!");
 
-        // Boss müziðini baþlat
+        
         if (audioSource != null && bossMusic != null)
         {
-            audioSource.Stop(); // Ana müziði durdur
+            audioSource.Stop(); 
             audioSource.clip = bossMusic;
             audioSource.loop = true;
             audioSource.Play();
         }
 
-        // BossManager'a boss'un spawn edildiðini bildir
+        
         BossManager bossManager = FindObjectOfType<BossManager>();
         if (bossManager != null)
         {
@@ -132,17 +132,17 @@ public class SpawnManager : MonoBehaviour
         Time.timeScale = 0f;
         spawning = false;
 
-        // Sahnedeki düþmanlarý temizle
+        
         GameObject[] remainingEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in remainingEnemies)
         {
             Destroy(enemy);
         }
 
-        // Market panelini aç
+        
         marketPanel.SetActive(true);
 
-        // Eðer tüm wave'ler bittiyse, oyun sonu iþlemleri
+        
         if (currentWave >= totalWaves)
         {
             Debug.Log("All waves completed!");
@@ -155,8 +155,8 @@ public class SpawnManager : MonoBehaviour
 
     public void CloseMarketPanel()
     {
-        marketPanel.SetActive(false); // Market panelini kapat
-        StartNewWave(); // Yeni wave baþlat
+        marketPanel.SetActive(false);
+        StartNewWave(); 
         Time.timeScale = 1f;
     }
 
@@ -165,8 +165,8 @@ public class SpawnManager : MonoBehaviour
         Vector3 randomPosition;
         do
         {
-            Vector2 randomCircle = Random.insideUnitCircle * spawnRadius; // Rastgele 2D pozisyon
-            randomPosition = new Vector3(randomCircle.x, 0, randomCircle.y) + player.position; // 3D pozisyon
+            Vector2 randomCircle = Random.insideUnitCircle * spawnRadius; 
+            randomPosition = new Vector3(randomCircle.x, 0, randomCircle.y) + player.position; 
         } while (Vector3.Distance(player.position, randomPosition) < minSpawnDistance);
 
         return randomPosition;

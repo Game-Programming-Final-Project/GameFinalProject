@@ -6,22 +6,22 @@ using TMPro;
 public class PlayerShooting : MonoBehaviour
 {
     public Animator animator;
-    public GameObject bulletPrefab; // Mermi prefab'ı
-    public float bulletSpeed = 10f; // Mermi hızı
-    public int maxAmmo = 30; // Maksimum mermi sayısı
-    private int currentAmmo; // Şu anki mermi sayısı
-    public float reloadTime = 2.5f; // Reload süresi
+    public GameObject bulletPrefab; 
+    public float bulletSpeed = 10f; 
+    public int maxAmmo = 30; 
+    private int currentAmmo; 
+    public float reloadTime = 2.5f; 
     private bool isReloading = false;
     public float bulletSpawnHeight = 3f;
     public float gunRange = 10f;
-    public float fireRate = 0.2f; // Ateş etme gecikmesi
+    public float fireRate = 0.2f; 
     private float nextFireTime = 0f;
     private AudioSource audioSource;
     public TextMeshProUGUI ammoText;
     private FinanceManager financeManager;
     public int damage = 10;
-    public AudioClip reloadSound; // Reload ses klibi
-    public bool isGameActive = false; // Oyunun aktif olup olmadığını kontrol eden değişken
+    public AudioClip reloadSound; 
+    public bool isGameActive = false;
     private Health health;
     
     void Start()
@@ -29,8 +29,8 @@ public class PlayerShooting : MonoBehaviour
         health = GetComponent<Health>();
         
         financeManager = FindObjectOfType<FinanceManager>();
-        currentAmmo = maxAmmo; // Başlangıçta maksimum mermi
-        audioSource = GetComponent<AudioSource>(); // AudioSource bileşenini al
+        currentAmmo = maxAmmo; 
+        audioSource = GetComponent<AudioSource>(); 
         UpdateAmmoText();
     }
 
@@ -38,19 +38,19 @@ public class PlayerShooting : MonoBehaviour
     {
         bool playerstatus = health.GetPlayerStatus();
 
-        // Sol tık ile ateş
+        
         if (!isReloading && currentAmmo > 0 && Input.GetMouseButton(0) && playerstatus)
         {
             if (Time.time >= nextFireTime)
             {
                 FireBullet();
                 currentAmmo--;
-                nextFireTime = Time.time + fireRate; // Bir sonraki ateş etme zamanı
+                nextFireTime = Time.time + fireRate; 
                 UpdateAmmoText();
             }
         }
 
-        // Eğer mermiler bitmişse veya R tuşuna basılmışsa reload işlemi
+        
         if ((Input.GetKeyDown(KeyCode.R) || currentAmmo <= 0) && !isReloading)
         {
             StartCoroutine(Reload());
@@ -59,19 +59,19 @@ public class PlayerShooting : MonoBehaviour
 
     void FireBullet()
     {
-        // Player'ın baktığı yön
+        
         Vector3 direction = transform.forward;
 
         animator.SetTrigger("ShootTrigger");
 
-        // Mermiyi instantiate et
+        
         GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(0, bulletSpawnHeight, 0), Quaternion.identity);
 
-        // Merminin Rigidbody'sini al
+        
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // Mermiyi hareket ettir
+            
             rb.velocity = direction * bulletSpeed;
         }
         else
@@ -79,10 +79,10 @@ public class PlayerShooting : MonoBehaviour
             Debug.LogWarning("Rigidbody component not found on bullet prefab!");
         }
 
-        // Mermiyi yok et
+        
         Destroy(bullet, gunRange);
 
-        // Mermi sesi çal
+       
         if (audioSource != null)
         {
             audioSource.PlayOneShot(audioSource.clip);
