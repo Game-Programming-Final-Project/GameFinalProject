@@ -6,31 +6,26 @@ using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject[] enemyPrefabs; // Dï¿½ï¿½man tï¿½rleri
-    public GameObject bossPrefab; // Boss dï¿½ï¿½man prefab'ï¿½
+    public GameObject[] enemyPrefabs; // Düþman türleri
+    public GameObject bossPrefab; // Boss düþman prefab'ý
     public Transform player; // Oyuncunun transform'u
-    public float spawnRadius = 20f; // Spawn yapï¿½lacak maksimum yarï¿½ï¿½ap
-    public float minSpawnDistance = 5f; // Oyuncunun minimum uzaklï¿½ï¿½ï¿½
-    public float spawnInterval = 2f; // Dï¿½ï¿½man spawn sï¿½klï¿½ï¿½ï¿½
-    public float waveDuration = 10f; // Her wave'in sï¿½resi
+    public float spawnRadius = 20f; // Spawn yapýlacak maksimum yarýçap
+    public float minSpawnDistance = 5f; // Oyuncunun minimum uzaklýðý
+    public float spawnInterval = 2f; // Düþman spawn sýklýðý
+    public float waveDuration = 10f; // Her wave'in süresi
 
     public Text waveTimerText; // UI'deki wave timer
     public GameObject marketPanel; // Market paneli
     public TextMeshProUGUI currentWaveText;
-    public bool spawning = true; // Spawn iï¿½lemi aktif mi?
-    public int currentWave = 1; // ï¿½u anki wave
-    public int totalWaves = 3; // Toplam wave sayï¿½sï¿½
-    private float waveTimeRemaining; // Wave iï¿½inde kalan sï¿½re
-    public AudioSource backgroundMusic;
-    public AudioSource bossMusic;
+    public bool spawning = true; // Spawn iþlemi aktif mi?
+    public int currentWave = 1; // Þu anki wave
+    public int totalWaves = 3; // Toplam wave sayýsý
+    private float waveTimeRemaining; // Wave içinde kalan süre
+
     void Start()
     {
         marketPanel.SetActive(false); // Market panelini gizle
-         if (backgroundMusic != null)
-        {
-            backgroundMusic.Play();
-        }
-        StartNewWave(); // ï¿½lk wave baï¿½lasï¿½n
+        StartNewWave(); // Ýlk wave baþlasýn
     }
 
     void Update()
@@ -38,11 +33,11 @@ public class SpawnManager : MonoBehaviour
         
         if (waveTimeRemaining > 0)
         {
-            waveTimeRemaining -= Time.deltaTime; // Sï¿½reyi azalt
-            waveTimerText.text = $"Time: {Mathf.Ceil(waveTimeRemaining)}"; // UI'yi gï¿½ncelle
+            waveTimeRemaining -= Time.deltaTime; // Süreyi azalt
+            waveTimerText.text = $"Time: {Mathf.Ceil(waveTimeRemaining)}"; // UI'yi güncelle
             currentWaveText.text = "Wave:"+currentWave;
         }
-        else if (spawning) // Wave sï¿½resi bittiï¿½inde
+        else if (spawning) // Wave süresi bittiðinde
         {
             EndWave();
         }
@@ -51,13 +46,10 @@ public class SpawnManager : MonoBehaviour
     public void StartNewWave()
     {
         spawning = true;
-        waveTimeRemaining = waveDuration; // Yeni wave iï¿½in sï¿½reyi baï¿½lat
-        if (currentWave == totalWaves) // Eï¿½er son wave'deysek
-        {   
-            SpawnBoss();
-            backgroundMusic.Stop();
-            bossMusic.Play();
-           // Boss dï¿½ï¿½manï¿½ spawn et
+        waveTimeRemaining = waveDuration; // Yeni wave için süreyi baþlat
+        if (currentWave == totalWaves) // Eðer son wave'deysek
+        {
+            SpawnBoss(); // Boss düþmaný spawn et
         }
         else
         {
@@ -69,10 +61,10 @@ public class SpawnManager : MonoBehaviour
     {
         while (spawning)
         {
-            // currentWave'i prefab sayï¿½sï¿½yla sï¿½nï¿½rlandï¿½r
+            // currentWave'i prefab sayýsýyla sýnýrlandýr
             int maxEnemyIndex = Mathf.Min(currentWave, enemyPrefabs.Length);
 
-            // Wave'e gï¿½re rastgele bir dï¿½ï¿½man seï¿½
+            // Wave'e göre rastgele bir düþman seç
             GameObject enemyToSpawn = enemyPrefabs[Random.Range(0, maxEnemyIndex)];
 
             Vector3 spawnPosition = GetRandomSpawnPosition();
@@ -84,26 +76,24 @@ public class SpawnManager : MonoBehaviour
 
 
     public void SpawnBoss()
-{
-    spawning = false; // Boss spawn edildiÄŸi iÃ§in normal spawn iÅŸlemi durduruluyor
-    Vector3 bossSpawnPosition = player.position - new Vector3(0, 0, -8); // Oyuncudan uzakta bir pozisyon belirle
-    GameObject spawnedBoss = Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity); // Boss'u spawn et
-
-    Debug.Log("Boss spawned!");
-   
-
-
-    // BossManager'a boss'un spawn edildiÄŸini bildir
-    BossManager bossManager = FindObjectOfType<BossManager>();
-    if (bossManager != null)
     {
-        bossManager.BossSpawned(spawnedBoss);
+        spawning = false; // Boss spawn edildiði için normal spawn iþlemi durduruluyor
+        Vector3 bossSpawnPosition = player.position - new Vector3(0, 0, -8); // Oyuncudan uzakta bir pozisyon belirle
+        GameObject spawnedBoss = Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity); // Boss'u spawn et
+
+        Debug.Log("Boss spawned!");
+
+        // BossManager'a boss'un spawn edildiðini bildir
+        BossManager bossManager = FindObjectOfType<BossManager>();
+        if (bossManager != null)
+        {
+            bossManager.BossSpawned(spawnedBoss);
+        }
+        else
+        {
+            Debug.LogWarning("BossManager bulunamadý! Boss öldüðünde WinScreen açýlmayacak.");
+        }
     }
-    else
-    {
-        Debug.LogWarning("BossManager bulunamadÄ±! Boss Ã¶ldÃ¼ÄŸÃ¼nde WinScreen aÃ§Ä±lmayacak.");
-    }
-}
 
 
     void EndWave()
@@ -112,21 +102,21 @@ public class SpawnManager : MonoBehaviour
         Time.timeScale = 0f;
         spawning = false;
 
-        // Sahnedeki dï¿½ï¿½manlarï¿½ temizle
+        // Sahnedeki düþmanlarý temizle
         GameObject[] remainingEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in remainingEnemies)
         {
             Destroy(enemy);
         }
 
-        // Market panelini aï¿½
+        // Market panelini aç
         marketPanel.SetActive(true);
 
-        // Eï¿½er tï¿½m wave'ler bittiyse, oyun sonu iï¿½lemleri
+        // Eðer tüm wave'ler bittiyse, oyun sonu iþlemleri
         if (currentWave >= totalWaves)
         {
             Debug.Log("All waves completed!");
-            // Oyunun bitiï¿½ mantï¿½ï¿½ï¿½nï¿½ buraya ekleyebilirsiniz
+            // Oyunun bitiþ mantýðýný buraya ekleyebilirsiniz
         }
         else
         {
@@ -137,7 +127,7 @@ public class SpawnManager : MonoBehaviour
     public void CloseMarketPanel()
     {
         marketPanel.SetActive(false); // Market panelini kapat
-        StartNewWave(); // Yeni wave baï¿½lat
+        StartNewWave(); // Yeni wave baþlat
         Time.timeScale = 1f;
     }
 

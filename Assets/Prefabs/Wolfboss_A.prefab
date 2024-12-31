@@ -940,13 +940,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 3533354461774365811}
   player: {fileID: 0}
-<<<<<<< HEAD
-  moveSpeed: 1
-  damage: 5
-=======
   moveSpeed: 5
   damage: 10
->>>>>>> 273316cbff76dd3b0d4644fb3f33cc58c222a7b1
   stopDistance: 2
   bossSpawnDelay: 2
 --- !u!114 &4643715986216328769

@@ -5,28 +5,28 @@ public class EnemyAI : MonoBehaviour
     public Animator animator;
     public Transform player; // Reference to the player's transform
     public float moveSpeed = 3f; // Speed at which the enemy moves towards the player
-    public float damage = 10f;  // Dï¿½ï¿½manï¿½n vereceï¿½i hasar
-    private bool isPlayerInRange = false; // Oyuncu trigger alanï¿½nda mï¿½?
-    private float damageCooldown = 1f; // 1 saniye aralï¿½kla hasar verme
-    private float lastDamageTime = 0f; // Son hasar verme zamanï¿½
+    public float damage = 10f;  // Düþmanýn vereceði hasar
+    private bool isPlayerInRange = false; // Oyuncu trigger alanýnda mý?
+    private float damageCooldown = 1f; // 1 saniye aralýkla hasar verme
+    private float lastDamageTime = 0f; // Son hasar verme zamaný
     public float stopDistance = 1.2f;
     private bool canFollowPlayer = true;
     public float bossSpawnDelay = 2f;
 
     void Start()
     {
-        if (gameObject.CompareTag("Boss")) // Eï¿½er bu dï¿½ï¿½man bir boss ise
+        if (gameObject.CompareTag("Boss")) // Eðer bu düþman bir boss ise
         {
-            canFollowPlayer = false; // ï¿½lk baï¿½ta oyuncuyu takip etmesin
-            Invoke(nameof(EnableFollowForBoss), bossSpawnDelay); // Belirli sï¿½re sonra takip baï¿½lasï¿½n
+            canFollowPlayer = false; // Ýlk baþta oyuncuyu takip etmesin
+            Invoke(nameof(EnableFollowForBoss), bossSpawnDelay); // Belirli süre sonra takip baþlasýn
         }
 
-        if (player == null) // Eï¿½er player atanmadï¿½ysa
+        if (player == null) // Eðer player atanmadýysa
         {
             GameObject playerObject = GameObject.FindWithTag("Player");
             if (playerObject != null)
             {
-                player = playerObject.transform; // Oyuncunun Transform bileï¿½enine eriï¿½
+                player = playerObject.transform; // Oyuncunun Transform bileþenine eriþ
             }
             else
             {
@@ -42,7 +42,7 @@ public class EnemyAI : MonoBehaviour
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-            if (distanceToPlayer > stopDistance) // Eï¿½er minimum mesafenin ï¿½zerindeyse yaklaï¿½
+            if (distanceToPlayer > stopDistance) // Eðer minimum mesafenin üzerindeyse yaklaþ
             {
                 MoveTowardsPlayer();
                 RotateTowardsPlayer();
@@ -50,14 +50,14 @@ public class EnemyAI : MonoBehaviour
             else
                 animator.SetTrigger("EnemyAttackTrigger");
 
-            // Eï¿½er oyuncu trigger alanï¿½nda ve yeterince zaman geï¿½miï¿½se hasar ver
+            // Eðer oyuncu trigger alanýnda ve yeterince zaman geçmiþse hasar ver
             if (isPlayerInRange && Time.time - lastDamageTime >= damageCooldown)
             {
                 Health playerHealth = player.GetComponent<Health>();
                 if (playerHealth != null)
                 {
                     playerHealth.TakeDamage(damage); // Oyuncuya hasar ver
-                    lastDamageTime = Time.time; // Son hasar zamanï¿½nï¿½ gï¿½ncelle
+                    lastDamageTime = Time.time; // Son hasar zamanýný güncelle
                 }
             }
         }
@@ -65,24 +65,24 @@ public class EnemyAI : MonoBehaviour
 
     void MoveTowardsPlayer()
     {
-        // Oyuncuya doï¿½ru hareket yï¿½nï¿½nï¿½ hesapla
+        // Oyuncuya doðru hareket yönünü hesapla
         Vector3 direction = (player.position - transform.position).normalized;
-        direction.y = 0; // Dï¿½ï¿½manï¿½n dikey dï¿½zlemde hareket etmesini engelle
+        direction.y = 0; // Düþmanýn dikey düzlemde hareket etmesini engelle
 
-        // Dï¿½ï¿½manï¿½ oyuncuya doï¿½ru hareket ettir
+        // Düþmaný oyuncuya doðru hareket ettir
         transform.position += direction * moveSpeed * Time.deltaTime;
     }
 
     void RotateTowardsPlayer()
     {
-        // Oyuncuya doï¿½ru yï¿½nï¿½ hesapla
+        // Oyuncuya doðru yönü hesapla
         Vector3 direction = (player.position - transform.position).normalized;
-        direction.y = 0; // Dï¿½nï¿½ï¿½ï¿½ sadece XZ dï¿½zleminde tut
+        direction.y = 0; // Dönüþü sadece XZ düzleminde tut
 
-        // Oyuncuya dï¿½nme rotasï¿½nï¿½ hesapla
+        // Oyuncuya dönme rotasýný hesapla
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        // Dï¿½ï¿½manï¿½ yavaï¿½ï¿½a oyuncuya doï¿½ru dï¿½ndï¿½r
+        // Düþmaný yavaþça oyuncuya doðru döndür
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
     }
 
@@ -91,7 +91,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInRange = true; // Oyuncu trigger alanï¿½na girdi
+            isPlayerInRange = true; // Oyuncu trigger alanýna girdi
         }
     }
 
@@ -100,12 +100,12 @@ public class EnemyAI : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             
-            isPlayerInRange = false; // Oyuncu trigger alanï¿½ndan ï¿½ï¿½ktï¿½
+            isPlayerInRange = false; // Oyuncu trigger alanýndan çýktý
         }
     }
     private void EnableFollowForBoss()
     {
         canFollowPlayer = true;
-        Debug.Log("Boss oyuncuyu takip etmeye baï¿½ladï¿½.");
+        Debug.Log("Boss oyuncuyu takip etmeye baþladý.");
     }
 }

@@ -3,15 +3,7 @@ guid: 524c16142c8f4f3438ed22fd59732451
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - bossPrefab: {instanceID: 0}
-  - player: {instanceID: 0}
-  - waveTimerText: {instanceID: 0}
-  - marketPanel: {instanceID: 0}
-  - currentWaveText: {instanceID: 0}
-  - audioSource: {instanceID: 0}
-  - normalMusic: {fileID: 8300000, guid: 3bab7c9841dcb1a4fa5f7007a11f46a5, type: 3}
-  - bossMusic: {fileID: 8300000, guid: 7e346f3981fa1b14a8f954495dd135c8, type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
